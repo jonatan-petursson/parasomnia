@@ -2,7 +2,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
+VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor (VzzzPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
 {
     juce::ignoreUnused (processorRef);
@@ -11,23 +11,31 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     setSize (400, 300);
 }
 
-AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
+VzzzPluginAudioProcessorEditor::~VzzzPluginAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
+void VzzzPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("Hello World 2!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
-void AudioPluginAudioProcessorEditor::resized()
+void VzzzPluginAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+
+    juce::FlexBox fb;
+    
+    fb.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb.justifyContent = juce::FlexBox::JustifyContent::center;
+    fb.alignContent = juce::FlexBox::AlignContent::center;
+
+    fb.performLayout(getLocalBounds());
 }
