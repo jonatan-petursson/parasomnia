@@ -45,7 +45,7 @@ juce_add_plugin(vzzz
     PLUGIN_MANUFACTURER_CODE Vzzz               # A four-character manufacturer id with at least one upper-case character
     PLUGIN_CODE Vzzz                            # A unique four-character plugin id with exactly one upper-case character
     
-    FORMATS AU VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
+    FORMATS VST2 VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
     PRODUCT_NAME "vzzz"                         # The name of the final executable, which can differ from the target name
     JUCE_COPY_PLUGIN_AFTER_BUILD true
     COPY_PLUGIN_AFTER_BUILD true)        

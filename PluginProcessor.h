@@ -1,9 +1,9 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
-
+#include <juce_audio_devices/midi_io/juce_MidiDevices.h>
 //==============================================================================
-class VzzzPluginAudioProcessor final : public juce::AudioProcessor
+class VzzzPluginAudioProcessor final : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -11,16 +11,16 @@ public:
     ~VzzzPluginAudioProcessor() override;
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+    bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
 
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
     using AudioProcessor::processBlock;
 
     //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override;
+    juce::AudioProcessorEditor *createEditor() override;
     bool hasEditor() const override;
 
     //==============================================================================
@@ -34,15 +34,24 @@ public:
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const juce::String getProgramName (int index) override;
-    void changeProgramName (int index, const juce::String& newName) override;
+    void setCurrentProgram(int index) override;
+    const juce::String getProgramName(int index) override;
+    void changeProgramName(int index, const juce::String &newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock &destData) override;
+    void setStateInformation(const void *data, int sizeInBytes) override;
+    juce::AudioProcessorValueTreeState *parameters;
+
+    static juce::String getParamId(int page, int param) { return "page_" + juce::String(page) + "_param_" + juce::String(param); }
+    static juce::String getParamName(int page, int param) { return "Page " + juce::String(page) + " Param " + juce::String(param); }
 
 private:
+    std::unique_ptr<juce::MidiOutput> midiOutput;
+    std::vector<juce::String> paramIds;
+    void sendMidiMessage(const juce::MidiMessage &message);
+    void parameterChanged(const juce::String &parameterId, float newValue) override;
+
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VzzzPluginAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VzzzPluginAudioProcessor)
 };
