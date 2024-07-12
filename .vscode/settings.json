@@ -63,6 +63,14 @@
     "variant": "cpp",
     "vector": "cpp",
     "algorithm": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "*.mm": "cpp",
+    "any": "cpp",
+    "forward_list": "cpp",
+    "span": "cpp",
+    "valarray": "cpp"
+  },
+  "workbench.editorAssociations": {
+    "*.syx": "hexEditor.hexedit"
   }
 }

@@ -1,0 +1,308 @@
+{
+  "pages": {
+    "1": {
+      "title": "Scene & Camera",
+      "shortTitle": "Scene",
+      "parameters": {
+        "1": {
+          "label": "Transform Z",
+          "shortLabel": "Trans Z"
+        },
+        "2": {
+          "label": "Transform Y",
+          "shortLabel": "Trans Y"
+        },
+        "3": {
+          "label": "Scale B",
+          "shortLabel": "Sc B"
+        },
+        "4": {
+          "label": "Y Master Rotation",
+          "shortLabel": "Y Rot"
+        },
+        "5": {
+          "label": "Z Master Rotation",
+          "shortLabel": "Z Rot"
+        },
+        "6": {
+          "label": "X Master Rotation",
+          "shortLabel": "X Rot"
+        },
+        "7": {
+          "label": "Scale A",
+          "shortLabel": "Sc A"
+        },
+        "8": {
+          "label": "Transform X",
+          "shortLabel": "Trans X"
+        }
+      }
+    },
+    "2": {
+      "title": "Geometry B",
+      "shortTitle": "Geo B",
+      "parameters": {
+        "1": {
+          "label": "D3 | Z Width",
+          "shortLabel": "D3 Z"
+        },
+        "2": {
+          "label": "D2 | Y Width",
+          "shortLabel": "D2 Y"
+        },
+        "3": {
+          "label": "Shell / FBM",
+          "shortLabel": "Shell"
+        },
+        "4": {
+          "label": "Mirror Mode",
+          "shortLabel": "Mirror"
+        },
+        "5": {
+          "label": "Shape select",
+          "shortLabel": "Shape"
+        },
+        "6": {
+          "label": "Twist",
+          "shortLabel": "Twist"
+        },
+        "7": {
+          "label": "",
+          "shortLabel": ""
+        },
+        "8": {
+          "label": "D1 | X Width",
+          "shortLabel": "D1 X"
+        }
+      }
+    },
+    "3": {
+      "title": "Material B",
+      "shortTitle": "Mat B",
+      "parameters": {
+        "1": {
+          "label": "Hue",
+          "shortLabel": "Hue"
+        },
+        "2": {
+          "label": "Luminance",
+          "shortLabel": "Lum"
+        },
+        "3": {
+          "label": "",
+          "shortLabel": ""
+        },
+        "4": {
+          "label": "Light Y",
+          "shortLabel": "Lt Y"
+        },
+        "5": {
+          "label": "Light Ambient",
+          "shortLabel": "Lt Amb"
+        },
+        "6": {
+          "label": "Light X",
+          "shortLabel": "Lt X"
+        },
+        "7": {
+          "label": "Shinyness",
+          "shortLabel": "Shiny"
+        },
+        "8": {
+          "label": "Chrominance",
+          "shortLabel": "Chrom"
+        }
+      }
+    },
+    "4": {
+      "title": "Transform B",
+      "shortTitle": "Trans B",
+      "parameters": {
+        "1": {
+          "label": "Z Rotation",
+          "shortLabel": "Z Rot"
+        },
+        "2": {
+          "label": "Y Rotation",
+          "shortLabel": "Y Rot"
+        },
+        "3": {
+          "label": "Domain Repeat Y",
+          "shortLabel": "Rep Y"
+        },
+        "4": {
+          "label": "Y Offset",
+          "shortLabel": "Y Off"
+        },
+        "5": {
+          "label": "Z Offset",
+          "shortLabel": "Z Off"
+        },
+        "6": {
+          "label": "X Offset",
+          "shortLabel": "X Off"
+        },
+        "7": {
+          "label": "Domain Repeat X",
+          "shortLabel": "Rep X"
+        },
+        "8": {
+          "label": "X Rotation",
+          "shortLabel": "X Rot"
+        }
+      }
+    },
+    "5": {
+      "title": "Feedback & Intersect",
+      "shortTitle": "Fdbk",
+      "parameters": {
+        "1": {
+          "label": "Feedback Type",
+          "shortLabel": "FB Type"
+        },
+        "2": {
+          "label": "Intersection Blend",
+          "shortLabel": "Int Blnd"
+        },
+        "3": {
+          "label": "Zoom",
+          "shortLabel": "Zoom"
+        },
+        "4": {
+          "label": "Y Offset",
+          "shortLabel": "Y Off"
+        },
+        "5": {
+          "label": "Feedback Gain",
+          "shortLabel": "FB Gain"
+        },
+        "6": {
+          "label": "X Offset",
+          "shortLabel": "X Off"
+        },
+        "7": {
+          "label": "Rotation",
+          "shortLabel": "Rot"
+        },
+        "8": {
+          "label": "Intersect Type",
+          "shortLabel": "Int Type"
+        }
+      }
+    },
+    "6": {
+      "title": "Transform A",
+      "shortTitle": "Trans A",
+      "parameters": {
+        "1": {
+          "label": "Z Rotation",
+          "shortLabel": "Z Rot"
+        },
+        "2": {
+          "label": "Y Rotation",
+          "shortLabel": "Y Rot"
+        },
+        "3": {
+          "label": "Domain Repeat Y",
+          "shortLabel": "Rep Y"
+        },
+        "4": {
+          "label": "Y Offset",
+          "shortLabel": "Y Off"
+        },
+        "5": {
+          "label": "Z Offset",
+          "shortLabel": "Z Off"
+        },
+        "6": {
+          "label": "X Offset",
+          "shortLabel": "X Off"
+        },
+        "7": {
+          "label": "Domain Repeat X",
+          "shortLabel": "Rep X"
+        },
+        "8": {
+          "label": "X Rotation",
+          "shortLabel": "X Rot"
+        }
+      }
+    },
+    "7": {
+      "title": "Material A",
+      "shortTitle": "Mat A",
+      "parameters": {
+        "1": {
+          "label": "Hue",
+          "shortLabel": "Hue"
+        },
+        "2": {
+          "label": "Luminance",
+          "shortLabel": "Lum"
+        },
+        "3": {
+          "label": "",
+          "shortLabel": ""
+        },
+        "4": {
+          "label": "Light Y",
+          "shortLabel": "Lt Y"
+        },
+        "5": {
+          "label": "Light Ambient",
+          "shortLabel": "Lt Amb"
+        },
+        "6": {
+          "label": "Light X",
+          "shortLabel": "Lt X"
+        },
+        "7": {
+          "label": "Shinyness",
+          "shortLabel": "Shiny"
+        },
+        "8": {
+          "label": "Chrominance",
+          "shortLabel": "Chrom"
+        }
+      }
+    },
+    "8": {
+      "title": "Geometry A",
+      "shortTitle": "Geo A",
+      "parameters": {
+        "1": {
+          "label": "D3 | Z Width",
+          "shortLabel": "D3 Z"
+        },
+        "2": {
+          "label": "D2 | Y Width",
+          "shortLabel": "D2 Y"
+        },
+        "3": {
+          "label": "Shell / FBM",
+          "shortLabel": "Shell"
+        },
+        "4": {
+          "label": "Mirror Mode",
+          "shortLabel": "Mirror"
+        },
+        "5": {
+          "label": "Shape select",
+          "shortLabel": "Shape"
+        },
+        "6": {
+          "label": "Twist",
+          "shortLabel": "Twist"
+        },
+        "7": {
+          "label": "",
+          "shortLabel": ""
+        },
+        "8": {
+          "label": "D1 | X Width",
+          "shortLabel": "D1 X"
+        }
+      }
+    }
+  }
+}

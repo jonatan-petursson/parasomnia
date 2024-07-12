@@ -11,27 +11,42 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
 #endif
       )
 {
-    // prepare parameters
-
-    // Create 8 groups of juce::AudioParameters in a loop
-
     std::vector<std::unique_ptr<juce::AudioProcessorParameterGroup>> groups;
-    groups.reserve(8);
 
+    groups.reserve(8);
     paramIds.reserve(64);
 
     for (int i = 1; i <= 8; i++)
     {
+        auto pageId = juce::String("page_") + juce::String(i);
+        auto pageName = juce::String("Page ") + juce::String(i);
+
         auto group = std::make_unique<juce::AudioProcessorParameterGroup>(
-            juce::String("page ") + juce::String(i),
-            juce::String("page") + juce::String(i),
+            pageId,
+            pageName,
             juce::String("|"));
 
         for (int j = 1; j <= 8; j++)
         {
             juce::String paramId = getParamId(i, j);
-            group->addChild(std::make_unique<juce::AudioParameterInt>(paramId, getParamName(i, j), 0, 127, 0));
+            juce::String paramName = getParamName(i, j);
+            group->addChild(std::make_unique<juce::AudioParameterInt>(paramId, paramName, 0, 127, 0));
             paramIds.push_back(paramId);
+
+            auto mod_group = std::make_unique<juce::AudioProcessorParameterGroup>(
+                paramId + "_modulations",
+                paramName + " Modulations",
+                juce::String("|"));
+
+            for (int k = 1; k <= 5; k++)
+            {
+                juce::String paramId = getParamId(i, j, k);
+                juce::String paramName = getParamName(i, j, k);
+
+                mod_group->addChild(std::make_unique<juce::AudioParameterInt>(paramId, paramName, 0, 127, 0));
+            }
+
+            group->addChild(std::move(mod_group));
         }
 
         groups.push_back(std::move(group));
@@ -60,6 +75,32 @@ VzzzPluginAudioProcessor::~VzzzPluginAudioProcessor()
         midiOutput.reset();
 }
 
+void VzzzPluginAudioProcessor::onCenterButtonUp()
+{
+    sendSysExMessage("bt_event,2,up,");
+}
+
+void VzzzPluginAudioProcessor::openPage(int page)
+{
+    sendSysExMessage("open_page," + juce::String(page - 1) + ",");
+}
+
+void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
+{
+    std::size_t size = message.getNumBytesAsUTF8();
+    char messageChars[size];
+    message.copyToUTF8(messageChars, size);
+
+    juce::Span<std::byte> byteSpan(reinterpret_cast<std::byte *>(messageChars), size);
+    juce::MidiMessage sysexMessage = juce::MidiMessage::createSysExMessage(byteSpan);
+
+    if (midiOutput != nullptr)
+    {
+        juce::Logger::writeToLog("Sending sysex message: " + message + " bytes: " + sysexMessage.getDescription());
+        midiOutput->sendMessageNow(sysexMessage);
+    }
+}
+
 void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId, float newValue)
 {
 
@@ -72,7 +113,8 @@ void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId,
     int page = parts[1].getIntValue();
     int param = parts[3].getIntValue();
 
-    sendMidiMessage(juce::MidiMessage::controllerEvent(1, page * param, newValue));
+    std::cout << "Sending cc" << (8 * (page - 1)) + param << std::endl;
+    sendMidiMessage(juce::MidiMessage::controllerEvent(1, (8 * (page - 1)) + param, newValue));
 }
 
 //==============================================================================

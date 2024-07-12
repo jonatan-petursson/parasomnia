@@ -65,7 +65,11 @@ juce_generate_juce_header(vzzz)
 target_sources(vzzz
     PRIVATE
         PluginEditor.cpp
-        PluginProcessor.cpp)
+        PluginProcessor.cpp
+        PageComponent.cpp
+        ModulationComponent.cpp
+        LabelTextProvider.cpp
+        LabeledSlider.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
@@ -88,7 +92,7 @@ target_compile_definitions(vzzz
 # static library. These source files can be of any kind (wav data, images, fonts, icons etc.).
 # Conversion to binary-data will happen when your target is built.
 
-# juce_add_binary_data(AudioPluginData SOURCES ...)
+juce_add_binary_data(AudioPluginData SOURCES labels.json)
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
@@ -98,7 +102,7 @@ target_compile_definitions(vzzz
 
 target_link_libraries(vzzz
     PRIVATE
-        # AudioPluginData           # If we'd created a binary data target, we'd link to it here
+        AudioPluginData
         juce::juce_audio_utils
     PUBLIC
         juce::juce_recommended_config_flags

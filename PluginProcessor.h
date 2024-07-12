@@ -2,6 +2,7 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_devices/midi_io/juce_MidiDevices.h>
+#include "LabelTextProvider.h"
 //==============================================================================
 class VzzzPluginAudioProcessor final : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
 {
@@ -44,7 +45,14 @@ public:
     juce::AudioProcessorValueTreeState *parameters;
 
     static juce::String getParamId(int page, int param) { return "page_" + juce::String(page) + "_param_" + juce::String(param); }
-    static juce::String getParamName(int page, int param) { return "Page " + juce::String(page) + " Param " + juce::String(param); }
+    static juce::String getParamName(int page, int param) { return LabelTextProvider::getParamName(page, param); }
+
+    static juce::String getParamId(int page, int param, int mod) { return "page_" + juce::String(page) + "_param_" + juce::String(param) + "_mod_" + juce::String(mod); }
+    static juce::String getParamName(int page, int param, int mod) { return "Page " + juce::String(page) + " Param " + juce::String(param) + " Mod " + juce::String(mod); }
+
+    void onCenterButtonUp();
+    void sendSysExMessage(juce::String message);
+    void openPage(int page);
 
 private:
     std::unique_ptr<juce::MidiOutput> midiOutput;
