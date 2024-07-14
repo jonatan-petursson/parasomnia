@@ -1,6 +1,8 @@
 #pragma once
 
 #include "PluginProcessor.h"
+#include "LabeledSlider.h"
+#include "IncrementDecrementComponent.h"
 
 class ModulationComponent : public juce::Component
 {
@@ -12,8 +14,14 @@ public:
     void resized() override;
 
 private:
-    juce::OwnedArray<juce::Slider> sliders;
+    LabeledSlider modSpeedSlider;
+    IncrementDecrementComponent audioFollowerAmplitude;
+    IncrementDecrementComponent audioFollowerSlew;
+    IncrementDecrementComponent modAmplitude;
+    IncrementDecrementComponent modShape;
+    juce::TextButton resetButton;
     juce::OwnedArray<juce::SliderParameterAttachment> attachments;
+    juce::Label label;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulationComponent)
 };

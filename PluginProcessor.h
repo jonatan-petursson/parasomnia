@@ -1,8 +1,7 @@
 #pragma once
 
-#include <juce_audio_processors/juce_audio_processors.h>
-#include <juce_audio_devices/midi_io/juce_MidiDevices.h>
-#include "LabelTextProvider.h"
+#include <JuceHeader.h>
+#include "ParamInfoProvider.h"
 //==============================================================================
 class VzzzPluginAudioProcessor final : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
 {
@@ -45,10 +44,30 @@ public:
     juce::AudioProcessorValueTreeState *parameters;
 
     static juce::String getParamId(int page, int param) { return "page_" + juce::String(page) + "_param_" + juce::String(param); }
-    static juce::String getParamName(int page, int param) { return LabelTextProvider::getParamName(page, param); }
+    static juce::String getParamName(int page, int param) { return ParamInfoProvider::getParamName(page, param); }
 
-    static juce::String getParamId(int page, int param, int mod) { return "page_" + juce::String(page) + "_param_" + juce::String(param) + "_mod_" + juce::String(mod); }
-    static juce::String getParamName(int page, int param, int mod) { return "Page " + juce::String(page) + " Param " + juce::String(param) + " Mod " + juce::String(mod); }
+    static juce::String getModSpeedParamName(int page, int param) { return ParamInfoProvider::getPageAbbreviation(page) + " " + ParamInfoProvider::getParamShortLabel(page, param) + " Mod"; }
+    static juce::String getModSpeedParamId(int page, int param) { return getParamId(page, param) + "_modSpeed"; }
+
+    static juce::String getAudioFollowerAmplitudeParamName(int page, int param) { return getParamName(page, param) + " Audio Follower Amplitude"; }
+    static juce::String getAudioFollowerAmplitudeParamId(int page, int param) { return getParamId(page, param) + "_audioFollowerAmplitude"; }
+
+    static juce::String getAudioFollowerSlewParamName(int page, int param) { return getParamName(page, param) + " Audio Follower Slew"; }
+    static juce::String getAudioFollowerSlewParamId(int page, int param) { return getParamId(page, param) + "_audioFollowerSlew"; }
+
+    static juce::String getModAmplitudeParamName(int page, int param) { return getParamName(page, param) + " Modulation Amplitude"; }
+    static juce::String getModAmplitudeParamId(int page, int param) { return getParamId(page, param) + "_modAmplitude"; }
+
+    static juce::String getModShapeParamName(int page, int param) { return getParamName(page, param) + " Modulation Shape"; }
+    static juce::String getModShapeParamId(int page, int param) { return getParamId(page, param) + "_modShape"; }
+
+    void incrementParameter(const juce::String &paramId, bool increment);
+    void incrementRenderScale(bool increment);
+
+    void updateSmoothing(float smoothing);
+    void updateModulation(int page, int param, int modulation, int value);
+    void resetModulation(int page, int param);
+    void init();
 
     void onCenterButtonUp();
     void sendSysExMessage(juce::String message);

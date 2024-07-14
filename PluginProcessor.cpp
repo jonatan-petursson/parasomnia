@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "ParamInfoProvider.h"
 //==============================================================================
 VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
     : AudioProcessor(BusesProperties()
@@ -13,8 +14,14 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
 {
     std::vector<std::unique_ptr<juce::AudioProcessorParameterGroup>> groups;
 
-    groups.reserve(8);
-    paramIds.reserve(64);
+    groups.reserve(9);
+    paramIds.reserve(200);
+
+    auto globalGroup = std::make_unique<juce::AudioProcessorParameterGroup>("global", "Global", "|");
+    globalGroup->addChild(std::make_unique<juce::AudioParameterFloat>("smoothing", "Smoothing", 0.0f, 0.9f, 0.0f));
+    paramIds.push_back("smoothing");
+
+    groups.push_back(std::move(globalGroup));
 
     for (int i = 1; i <= 8; i++)
     {
@@ -33,20 +40,10 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
             group->addChild(std::make_unique<juce::AudioParameterInt>(paramId, paramName, 0, 127, 0));
             paramIds.push_back(paramId);
 
-            auto mod_group = std::make_unique<juce::AudioProcessorParameterGroup>(
-                paramId + "_modulations",
-                paramName + " Modulations",
-                juce::String("|"));
-
-            for (int k = 1; k <= 5; k++)
-            {
-                juce::String paramId = getParamId(i, j, k);
-                juce::String paramName = getParamName(i, j, k);
-
-                mod_group->addChild(std::make_unique<juce::AudioParameterInt>(paramId, paramName, 0, 127, 0));
-            }
-
-            group->addChild(std::move(mod_group));
+            juce::String modSpeedParamId = getModSpeedParamId(i, j);
+            juce::String modSpeedParamName = getModSpeedParamName(i, j);
+            group->addChild(std::make_unique<juce::AudioParameterInt>(modSpeedParamId, modSpeedParamName, 0, 127, 64));
+            paramIds.push_back(modSpeedParamId);
         }
 
         groups.push_back(std::move(group));
@@ -75,6 +72,50 @@ VzzzPluginAudioProcessor::~VzzzPluginAudioProcessor()
         midiOutput.reset();
 }
 
+void VzzzPluginAudioProcessor::incrementParameter(const juce::String &paramId, bool increment)
+{
+    juce::StringArray parts;
+    parts.addTokens(paramId, "_", "\"");
+
+    int page = parts[1].getIntValue();
+    int param = parts[3].getIntValue();
+    auto modType = parts[4];
+    int modTypeNumber = 0;
+
+    if (modType == "audioFollowerAmplitude")
+    {
+        modTypeNumber = 7;
+    }
+    else if (modType == "audioFollowerSlew")
+    {
+        modTypeNumber = 6;
+    }
+    else if (modType == "modAmplitude")
+    {
+        modTypeNumber = 1;
+    }
+    else if (modType == "modShape")
+    {
+        modTypeNumber = 2;
+    }
+    else
+    {
+        juce::Logger::writeToLog("Unknown mod type: " + modType + ", ignoring.");
+        return;
+    }
+
+    sendSysExMessage("mod_menu_increment,1," +
+                     juce::String(param + (8 * (page - 1))) + "," +
+                     juce::String(modTypeNumber) + "," +
+                     (increment ? "1" : "0") + "," +
+                     "1,");
+}
+
+void VzzzPluginAudioProcessor::incrementRenderScale(bool increment)
+{
+    sendSysExMessage("render_scale," + juce::String(increment ? "1" : "0") + ",");
+}
+
 void VzzzPluginAudioProcessor::onCenterButtonUp()
 {
     sendSysExMessage("bt_event,2,up,");
@@ -101,20 +142,63 @@ void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
     }
 }
 
+void VzzzPluginAudioProcessor::updateModulation(int page, int param, int modulation, int value)
+{
+}
+
+void VzzzPluginAudioProcessor::updateSmoothing(float value)
+{
+    sendSysExMessage("smoothing," + juce::String(value) + ",");
+}
+
+void VzzzPluginAudioProcessor::resetModulation(int page, int param)
+{
+    sendSysExMessage("reset," + juce::String(page) + "," + juce::String(param) + ",");
+}
+
+void VzzzPluginAudioProcessor::init()
+{
+    for (const auto &paramId : paramIds)
+    {
+        if (auto *param = parameters->getParameter(paramId))
+        {
+            param->setValueNotifyingHost(param->getDefaultValue());
+        }
+    }
+
+    sendSysExMessage("init,");
+}
+
 void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId, float newValue)
 {
 
-    juce::ignoreUnused(parameterId, newValue);
-    std::cout << "Parameter changed: " << parameterId << ", new value: " << newValue << std::endl;
+    juce::Logger::writeToLog("Parameter changed: " + parameterId + ", new value: " + juce::String(newValue));
+    // Handle global smoothing param
+    if (parameterId == "smoothing")
+    {
+        updateSmoothing(newValue);
+        return;
+    }
 
     juce::StringArray parts;
     parts.addTokens(parameterId, "_", "\"");
 
     int page = parts[1].getIntValue();
     int param = parts[3].getIntValue();
+    int cc = (8 * (page - 1)) + param;
 
-    std::cout << "Sending cc" << (8 * (page - 1)) + param << std::endl;
-    sendMidiMessage(juce::MidiMessage::controllerEvent(1, (8 * (page - 1)) + param, newValue));
+    if (parts.size() == 4)
+    {
+        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc, newValue));
+    }
+    else if (parts.size() == 5 && parts[4] == "modSpeed")
+    {
+        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc + 65, newValue));
+    }
+    else
+    {
+        juce::Logger::writeToLog("Unknown parameter: " + parameterId);
+    }
 }
 
 //==============================================================================
@@ -241,15 +325,8 @@ void VzzzPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (auto i = 0; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
-
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto *channelData = buffer.getWritePointer(channel);
-        juce::ignoreUnused(channelData);
-        // ..do something to the data...
-    }
 }
 
 //==============================================================================

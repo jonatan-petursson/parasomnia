@@ -1,4 +1,4 @@
-// LabelTextProvider.h
+#pragma once
 
 #ifndef LABEL_TEXT_PROVIDER_H
 #define LABEL_TEXT_PROVIDER_H
@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "vendor/nlohmann/json.hpp"
 
-class LabelTextProvider
+class ParamInfoProvider
 {
 private:
     static nlohmann::json jsonData;
@@ -15,7 +15,7 @@ private:
     static bool isInitialized;
 
     // Private constructor to prevent instantiation
-    LabelTextProvider() = delete;
+    ParamInfoProvider() = delete;
 
 public:
     static void initialize();
@@ -25,8 +25,12 @@ public:
     static const std::string &getJsonString();
     static std::string getPageTitle(int page);
     static std::string getPageShortTitle(int page);
+    static std::string getPageAbbreviation(int page);
     static std::string getParamShortLabel(int page, int param);
     static std::string getParamName(int page, int param);
+    static std::string getModParamLabel(int param);
+    static std::string getModSpeedParamName(int page, int param);
+    static std::string getModSpeedParamId(int page, int param);
 };
 
 #endif // LABEL_TEXT_PROVIDER_H

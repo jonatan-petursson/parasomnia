@@ -1,7 +1,6 @@
-#include "PluginProcessor.h"
-#include "PluginEditor.h"
 #include "PageComponent.h"
-#include "LabelTextProvider.h"
+#include "PluginEditor.h"
+#include "ParamInfoProvider.h"
 
 PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcessorEditor &pe, int pageArg)
     : processorRef(p),
@@ -10,27 +9,32 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
       rightButton("Right", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
       centerButton("Center", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
       modulationTabs(juce::TabbedButtonBar::Orientation::TabsAtTop),
-      page(pageArg)
+      page(pageArg),
+      pageLabel(ParamInfoProvider::getPageShortTitle(pageArg), ParamInfoProvider::getPageTitle(pageArg))
 {
+
+    pageLabel.setFont(juce::Font(15.0f));
+    pageLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(pageLabel);
 
     for (int i = 1; i <= 8; ++i)
     {
-        juce::Slider *slider = new juce::Slider(juce::Slider::RotaryVerticalDrag, juce::Slider::NoTextBox);
+        LabeledSlider *ls = new LabeledSlider(
+            ParamInfoProvider::getParamShortLabel(page, i),
+            *p.parameters->getParameter(VzzzPluginAudioProcessor::getParamId(page, i)), [this, i]()
+            { modulationTabs.setCurrentTabIndex(i - 1); });
 
-        slider->setRange(0.0, 127.0, 1.0);
-        addAndMakeVisible(sliders.add(slider));
+        addAndMakeVisible(ls);
+        labeledSliders.add(ls);
 
-        juce::SliderParameterAttachment *attachment = new juce::SliderParameterAttachment(
-            *p.parameters->getParameter(VzzzPluginAudioProcessor::getParamId(page, i)),
-            *slider,
-            nullptr);
-
-        slider->addMouseListener(this, false);
-
-        attachments.add(attachment);
+        auto modulationHeading = ParamInfoProvider::getParamShortLabel(page, i);
+        if (modulationHeading == "")
+        {
+            modulationHeading = "Unused";
+        }
 
         modulationTabs.addTab(
-            juce::String(i),
+            modulationHeading,
             juce::Colours::transparentBlack,
             new ModulationComponent(p, page, i),
             true);
@@ -44,21 +48,25 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
 
     juce::DrawablePath drawable = juce::DrawablePath();
     drawable.setPath(path);
-    drawable.setFill(juce::Colours::grey);
+    drawable.setFill(juce::Colours::black.withAlpha(0.2f));
+
+    juce::DrawablePath drawableOver = juce::DrawablePath();
+    drawableOver.setPath(path);
+    drawableOver.setFill(juce::Colours::black.withAlpha(0.4f));
 
     const juce::Drawable *drawableRef = &drawable;
-    // convert to drawable pointer
+    const juce::Drawable *drawableOverRef = &drawableOver;
 
-    leftButton.setImages(drawableRef, nullptr, nullptr, nullptr, nullptr);
-    rightButton.setImages(drawableRef, nullptr, nullptr, nullptr, nullptr);
-    centerButton.setImages(drawableRef, nullptr, nullptr, nullptr, nullptr);
+    leftButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
+    rightButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
+    centerButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
 
     centerButton.setButtonStyle(juce::DrawableButton::ButtonStyle::ImageFitted);
 
     leftButton.setButtonText("Left");
-    addAndMakeVisible(leftButton);
+    // addAndMakeVisible(leftButton);
     rightButton.setButtonText("Right");
-    addAndMakeVisible(rightButton);
+    // addAndMakeVisible(rightButton);
     centerButton.setButtonText("Center");
     addAndMakeVisible(centerButton);
 
@@ -69,6 +77,8 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
     centerButton.onClick = [&pe]
     { pe.buttonClicked("center"); };
 
+    modulationTabs.setTabBarDepth(0);
+    modulationTabs.setColour(juce::TabbedComponent::ColourIds::outlineColourId, juce::Colours::transparentBlack);
     setSize(400, 500);
 }
 
@@ -105,45 +115,62 @@ void PageComponent::resized()
     using Fr = juce::Grid::Fr;
 
     grid.templateColumns = {Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1))};
-    grid.templateRows = {Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1))};
+    grid.templateRows = {Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1))};
 
-    grid.items.add(
-        Gi(leftButton),
-        Gi(),
-        Gi(sliders[4]).withMargin(Gi::Margin(0, 0, -100.0f, 0)).withJustifySelf(Gi::JustifySelf::center),
-        Gi(),
-        Gi(rightButton));
+    auto totalBounds = getLocalBounds();
 
-    grid.items.add(
-        Gi(),
-        Gi(sliders[5]),
-        Gi(),
-        Gi(sliders[3]),
-        Gi());
+    totalBounds.removeFromTop(20);
+    auto headerBounds = totalBounds.removeFromTop(20);
+    pageLabel.setBounds(headerBounds);
 
-    grid.items.add(
-        Gi(sliders[6]).withMargin(Gi::Margin(0, -100.0f, 0, 0)),
-        Gi(),
-        Gi(centerButton).withMargin(Gi::Margin(10)),
-        Gi(),
-        Gi(sliders[2]).withMargin(Gi::Margin(0, 0, 0, -100.0f)));
+    // Reserve space for modulationTabs
+    int modulationTabsHeight = totalBounds.getHeight() / 4; // 20% of total height
+    auto gridBounds = totalBounds.removeFromTop(totalBounds.getHeight() - modulationTabsHeight);
 
-    grid.items.add(
-        Gi(),
-        Gi(sliders[7]),
-        Gi(),
-        Gi(sliders[1]),
-        Gi());
+    int minDimension = juce::jmin(gridBounds.getWidth(), gridBounds.getHeight());
+    auto gridInnerBounds = juce::Rectangle<int>(0, 0, minDimension, minDimension).withCentre(gridBounds.getCentre());
+
+    // Calculate relative margins
+    float relativeMargin = minDimension * 0.1f; // 10% of the grid size
+
+    gridInnerBounds.expand(relativeMargin, relativeMargin);
 
     grid.items.add(
         Gi(),
         Gi(),
-        Gi(sliders[0]).withMargin(Gi::Margin(-100.0f, 0, 0, 0)),
+        Gi(labeledSliders[4]).withMargin(Gi::Margin(relativeMargin, 0, -relativeMargin, 0)),
         Gi(),
         Gi());
 
     grid.items.add(
-        Gi(modulationTabs).withMargin(0).withArea(6, 1, 8, 6));
+        Gi(),
+        Gi(labeledSliders[5]),
+        Gi(),
+        Gi(labeledSliders[3]),
+        Gi());
 
-    grid.performLayout(getLocalBounds());
+    grid.items.add(
+        Gi(labeledSliders[6]).withMargin(Gi::Margin(0, -relativeMargin * 2, 0, 0)),
+        Gi(),
+        Gi(centerButton).withMargin(Gi::Margin(relativeMargin * 0.5f)),
+        Gi(),
+        Gi(labeledSliders[2]).withMargin(Gi::Margin(0, 0, 0, -relativeMargin * 2)));
+
+    grid.items.add(
+        Gi(),
+        Gi(labeledSliders[7]),
+        Gi(),
+        Gi(labeledSliders[1]),
+        Gi());
+
+    grid.items.add(
+        Gi(),
+        Gi(),
+        Gi(labeledSliders[0]).withMargin(Gi::Margin(-relativeMargin, 0, relativeMargin, 0)),
+        Gi(),
+        Gi());
+
+    grid.performLayout(gridInnerBounds.reduced(10));
+
+    modulationTabs.setBounds(totalBounds);
 }

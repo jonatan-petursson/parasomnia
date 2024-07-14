@@ -1,27 +1,55 @@
 #include "ModulationComponent.h"
 #include "PageComponent.h"
+#include "ParamInfoProvider.h"
 
-ModulationComponent::ModulationComponent(VzzzPluginAudioProcessor &p, int page, int param)
+ModulationComponent::ModulationComponent(VzzzPluginAudioProcessor &p, int page, int param) : label(ParamInfoProvider::getParamName(page, param),
+                                                                                                   ParamInfoProvider::getParamLabel(page, param) + " Modulation"),
+                                                                                             modSpeedSlider(
+                                                                                                 "Mod Speed",
+                                                                                                 *p.parameters->getParameter(VzzzPluginAudioProcessor::getModSpeedParamId(page, param)),
+                                                                                                 []() {}),
+                                                                                             audioFollowerAmplitude(
+                                                                                                 "Audio Follower Amplitude",
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), true); },
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), false); }),
+                                                                                             audioFollowerSlew(
+                                                                                                 "Audio Follower Slew",
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), true); },
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), false); }),
+                                                                                             modAmplitude(
+                                                                                                 "Modulation Amplitude",
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), true); },
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), false); }),
+                                                                                             modShape(
+                                                                                                 "Modulation Shape",
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), true); },
+                                                                                                 [&p, page, param]()
+                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), false); }),
+                                                                                             resetButton("Reset", ParamInfoProvider::getParamName(page, param) + "_reset")
+
 {
-    // Create and add sliders
-    for (int i = 1; i <= 5; ++i)
+    addAndMakeVisible(modSpeedSlider);
+    addAndMakeVisible(audioFollowerAmplitude);
+    addAndMakeVisible(audioFollowerSlew);
+    addAndMakeVisible(modAmplitude);
+    addAndMakeVisible(modShape);
+    addAndMakeVisible(resetButton);
+
+    resetButton.onClick = [&p, page, param]()
     {
-        auto *slider = sliders.add(new juce::Slider(juce::Slider::SliderStyle::RotaryVerticalDrag, juce::Slider::NoTextBox));
-        slider->setRange(0.0, 1.0);
-        slider->setValue(0.5);
-        slider->setNumDecimalPlacesToDisplay(2);
+        p.parameters->getParameter(VzzzPluginAudioProcessor::getModSpeedParamId(page, param))->setValueNotifyingHost(0.5f);
+        p.resetModulation(page, param);
+    };
 
-        // Attach the slider to the corresponding parameter
-        auto param_id = VzzzPluginAudioProcessor::getParamId(page, param, i);
-
-        attachments.add(
-            new juce::SliderParameterAttachment(
-                *p.parameters->getParameter(param_id),
-                *slider,
-                nullptr));
-
-        addAndMakeVisible(slider);
-    }
+    label.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(label);
 }
 
 ModulationComponent::~ModulationComponent()
@@ -30,9 +58,6 @@ ModulationComponent::~ModulationComponent()
 
 void ModulationComponent::paint(juce::Graphics &g)
 {
-    g.fillAll(juce::Colours::darkgrey);
-
-    g.setColour(juce::Colours::white);
     g.setFont(15.0f);
 }
 
@@ -40,18 +65,23 @@ void ModulationComponent::resized()
 {
     juce::Grid grid;
 
+    grid.setGap(juce::Grid::Px(10));
+
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
     using Gi = juce::GridItem;
 
-    grid.templateRows = {Track(Fr(1))};
+    grid.templateRows = {Track(Fr(1)), Track(Fr(4))};
     grid.templateColumns = {Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1)), Track(Fr(1))};
 
-    for (int i = 0; i < sliders.size(); ++i)
-    {
-        grid.items.add(Gi(*sliders[i]));
-    }
+    grid.items.add(Gi(label).withArea(1, 2, 2, 5));
+    grid.items.add(Gi(resetButton).withArea(1, 5, 2, 6));
+    grid.items.add(Gi(audioFollowerSlew).withArea(2, 1));
+    grid.items.add(Gi(audioFollowerAmplitude).withArea(2, 2));
+    grid.items.add(Gi(modSpeedSlider).withArea(2, 3));
+    grid.items.add(Gi(modAmplitude).withArea(2, 4));
+    grid.items.add(Gi(modShape).withArea(2, 5));
 
     auto bounds = getLocalBounds();
-    grid.performLayout(bounds);
+    grid.performLayout(bounds.reduced(10));
 }

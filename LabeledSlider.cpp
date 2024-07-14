@@ -1,17 +1,29 @@
 
 #include "LabeledSlider.h"
 
-LabeledSlider::LabeledSlider(const juce::String &labelText)
+LabeledSlider::LabeledSlider(
+    const juce::String &labelText,
+    juce::RangedAudioParameter &parameter,
+    std::function<void()> onClick) : attachment(std::make_unique<juce::SliderParameterAttachment>(parameter, slider)),
+                                     onClick(onClick),
+                                     label(labelText, labelText)
 {
-    // Set up the slider
-    slider.setSliderStyle(juce::Slider::LinearHorizontal);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
+    this->addMouseListener(this, true);
+
+    slider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     addAndMakeVisible(slider);
 
-    // Set up the label
-    label.setText(labelText, juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label);
+}
+
+void LabeledSlider::mouseUp(const juce::MouseEvent &event)
+{
+    if (event.mods.isLeftButtonDown())
+    {
+        onClick();
+    }
 }
 
 void LabeledSlider::resized()

@@ -4,6 +4,7 @@ class VzzzPluginAudioProcessorEditor;
 
 #include "PluginProcessor.h"
 #include "ModulationComponent.h"
+#include "LabeledSlider.h"
 
 class PageComponent : public juce::Component
 {
@@ -20,7 +21,9 @@ private:
     VzzzPluginAudioProcessorEditor &processorEditorRef;
 
     juce::OwnedArray<juce::SliderParameterAttachment> attachments;
+    juce::OwnedArray<LabeledSlider> labeledSliders;
     juce::OwnedArray<juce::Slider> sliders;
+    juce::OwnedArray<juce::DrawableRectangle> debugRectangles;
 
     juce::OwnedArray<ModulationComponent> modulationComponents;
 
@@ -29,6 +32,8 @@ private:
     juce::DrawableButton leftButton;
     juce::DrawableButton rightButton;
     juce::DrawableButton centerButton;
+
+    juce::Label pageLabel;
 
     int page;
 

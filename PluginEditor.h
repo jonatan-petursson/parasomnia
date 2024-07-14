@@ -3,7 +3,10 @@
 class PageComponent;
 
 #include "PluginProcessor.h"
-#include "LabelTextProvider.h"
+#include "ParamInfoProvider.h"
+#include "IncrementDecrementComponent.h"
+#include "LabeledSlider.h"
+#include "CustomLookAndFeel.h"
 //==============================================================================
 class VzzzPluginAudioProcessorEditor final : public juce::AudioProcessorEditor
 {
@@ -22,7 +25,7 @@ public:
     static juce::String getParamName(int page, int param) { return VzzzPluginAudioProcessor::getParamName(page, param); }
     static juce::String getParamLabel(int page, int param)
     {
-        return LabelTextProvider::getParamLabel(page, param);
+        return ParamInfoProvider::getParamLabel(page, param);
     }
 
 private:
@@ -32,6 +35,13 @@ private:
 
     juce::OwnedArray<PageComponent> pages;
     juce::TabbedComponent tabController;
+
+    LabeledSlider smoothingSlider;
+    IncrementDecrementComponent renderScaleControl;
+    juce::TextButton initButton;
+    juce::Label globalLabel;
+
+    CustomLookAndFeel lookAndFeel;
 
     int currentPage = 0;
 

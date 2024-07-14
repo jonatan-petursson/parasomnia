@@ -3,306 +3,395 @@
     "1": {
       "title": "Scene & Camera",
       "shortTitle": "Scene",
+      "abbreviation": "Sc",
       "parameters": {
         "1": {
           "label": "Transform Z",
-          "shortLabel": "Trans Z"
+          "shortLabel": "Trans Z",
+          "enabled": true
         },
         "2": {
           "label": "Transform Y",
-          "shortLabel": "Trans Y"
+          "shortLabel": "Trans Y",
+          "enabled": true
         },
         "3": {
           "label": "Scale B",
-          "shortLabel": "Sc B"
+          "shortLabel": "Sc B",
+          "enabled": true
         },
         "4": {
           "label": "Y Master Rotation",
-          "shortLabel": "Y Rot"
+          "shortLabel": "Y Rot",
+          "enabled": true
         },
         "5": {
           "label": "Z Master Rotation",
-          "shortLabel": "Z Rot"
+          "shortLabel": "Z Rot",
+          "enabled": true
         },
         "6": {
           "label": "X Master Rotation",
-          "shortLabel": "X Rot"
+          "shortLabel": "X Rot",
+          "enabled": true
         },
         "7": {
           "label": "Scale A",
-          "shortLabel": "Sc A"
+          "shortLabel": "Sc A",
+          "enabled": true
         },
         "8": {
           "label": "Transform X",
-          "shortLabel": "Trans X"
+          "shortLabel": "Trans X",
+          "enabled": true
         }
       }
     },
     "2": {
       "title": "Geometry B",
       "shortTitle": "Geo B",
+      "abbreviation": "G:B",
       "parameters": {
         "1": {
           "label": "D3 | Z Width",
-          "shortLabel": "D3 Z"
+          "shortLabel": "D3 Z",
+          "enabled": true
         },
         "2": {
           "label": "D2 | Y Width",
-          "shortLabel": "D2 Y"
+          "shortLabel": "D2 Y",
+          "enabled": true
         },
         "3": {
           "label": "Shell / FBM",
-          "shortLabel": "Shell"
+          "shortLabel": "Shell",
+          "enabled": true
         },
         "4": {
           "label": "Mirror Mode",
-          "shortLabel": "Mirror"
+          "shortLabel": "Mirror",
+          "enabled": true
         },
         "5": {
           "label": "Shape select",
-          "shortLabel": "Shape"
+          "shortLabel": "Shape",
+          "enabled": true
         },
         "6": {
           "label": "Twist",
-          "shortLabel": "Twist"
+          "shortLabel": "Twist",
+          "enabled": true
         },
         "7": {
           "label": "",
-          "shortLabel": ""
+          "shortLabel": "",
+          "enabled": false
         },
         "8": {
           "label": "D1 | X Width",
-          "shortLabel": "D1 X"
+          "shortLabel": "D1 X",
+          "enabled": true
         }
       }
     },
     "3": {
       "title": "Material B",
       "shortTitle": "Mat B",
+      "abbreviation": "M:B",
       "parameters": {
         "1": {
           "label": "Hue",
-          "shortLabel": "Hue"
+          "shortLabel": "Hue",
+          "enabled": true
         },
         "2": {
           "label": "Luminance",
-          "shortLabel": "Lum"
+          "shortLabel": "Lum",
+          "enabled": true
         },
         "3": {
           "label": "",
-          "shortLabel": ""
+          "shortLabel": "",
+          "enabled": false
         },
         "4": {
           "label": "Light Y",
-          "shortLabel": "Lt Y"
+          "shortLabel": "Lt Y",
+          "enabled": true
         },
         "5": {
           "label": "Light Ambient",
-          "shortLabel": "Lt Amb"
+          "shortLabel": "Lt Amb",
+          "enabled": true
         },
         "6": {
           "label": "Light X",
-          "shortLabel": "Lt X"
+          "shortLabel": "Lt X",
+          "enabled": true
         },
         "7": {
           "label": "Shinyness",
-          "shortLabel": "Shiny"
+          "shortLabel": "Shiny",
+          "enabled": true
         },
         "8": {
           "label": "Chrominance",
-          "shortLabel": "Chrom"
+          "shortLabel": "Chrom",
+          "enabled": true
         }
       }
     },
     "4": {
       "title": "Transform B",
       "shortTitle": "Trans B",
+      "abbreviation": "T:B",
       "parameters": {
         "1": {
           "label": "Z Rotation",
-          "shortLabel": "Z Rot"
+          "shortLabel": "Z Rot",
+          "enabled": true
         },
         "2": {
           "label": "Y Rotation",
-          "shortLabel": "Y Rot"
+          "shortLabel": "Y Rot",
+          "enabled": true
         },
         "3": {
           "label": "Domain Repeat Y",
-          "shortLabel": "Rep Y"
+          "shortLabel": "Rep Y",
+          "enabled": true
         },
         "4": {
           "label": "Y Offset",
-          "shortLabel": "Y Off"
+          "shortLabel": "Y Off",
+          "enabled": true
         },
         "5": {
           "label": "Z Offset",
-          "shortLabel": "Z Off"
+          "shortLabel": "Z Off",
+          "enabled": true
         },
         "6": {
           "label": "X Offset",
-          "shortLabel": "X Off"
+          "shortLabel": "X Off",
+          "enabled": true
         },
         "7": {
           "label": "Domain Repeat X",
-          "shortLabel": "Rep X"
+          "shortLabel": "Rep X",
+          "enabled": true
         },
         "8": {
           "label": "X Rotation",
-          "shortLabel": "X Rot"
+          "shortLabel": "X Rot",
+          "enabled": true
         }
       }
     },
     "5": {
       "title": "Feedback & Intersect",
       "shortTitle": "Fdbk",
+      "abbreviation": "Fdbk",
       "parameters": {
         "1": {
           "label": "Feedback Type",
-          "shortLabel": "FB Type"
+          "shortLabel": "FB Type",
+          "enabled": true
         },
         "2": {
           "label": "Intersection Blend",
-          "shortLabel": "Int Blnd"
+          "shortLabel": "Int Blnd",
+          "enabled": true
         },
         "3": {
           "label": "Zoom",
-          "shortLabel": "Zoom"
+          "shortLabel": "Zoom",
+          "enabled": true
         },
         "4": {
           "label": "Y Offset",
-          "shortLabel": "Y Off"
+          "shortLabel": "Y Off",
+          "enabled": true
         },
         "5": {
           "label": "Feedback Gain",
-          "shortLabel": "FB Gain"
+          "shortLabel": "FB Gain",
+          "enabled": true
         },
         "6": {
           "label": "X Offset",
-          "shortLabel": "X Off"
+          "shortLabel": "X Off",
+          "enabled": true
         },
         "7": {
           "label": "Rotation",
-          "shortLabel": "Rot"
+          "shortLabel": "Rot",
+          "enabled": true
         },
         "8": {
           "label": "Intersect Type",
-          "shortLabel": "Int Type"
+          "shortLabel": "Int Type",
+          "enabled": true
         }
       }
     },
     "6": {
       "title": "Transform A",
       "shortTitle": "Trans A",
+      "abbreviation": "T:A",
       "parameters": {
         "1": {
           "label": "Z Rotation",
-          "shortLabel": "Z Rot"
+          "shortLabel": "Z Rot",
+          "enabled": true
         },
         "2": {
           "label": "Y Rotation",
-          "shortLabel": "Y Rot"
+          "shortLabel": "Y Rot",
+          "enabled": true
         },
         "3": {
           "label": "Domain Repeat Y",
-          "shortLabel": "Rep Y"
+          "shortLabel": "Rep Y",
+          "enabled": true
         },
         "4": {
           "label": "Y Offset",
-          "shortLabel": "Y Off"
+          "shortLabel": "Y Off",
+          "enabled": true
         },
         "5": {
           "label": "Z Offset",
-          "shortLabel": "Z Off"
+          "shortLabel": "Z Off",
+          "enabled": true
         },
         "6": {
           "label": "X Offset",
-          "shortLabel": "X Off"
+          "shortLabel": "X Off",
+          "enabled": true
         },
         "7": {
           "label": "Domain Repeat X",
-          "shortLabel": "Rep X"
+          "shortLabel": "Rep X",
+          "enabled": true
         },
         "8": {
           "label": "X Rotation",
-          "shortLabel": "X Rot"
+          "shortLabel": "X Rot",
+          "enabled": true
         }
       }
     },
     "7": {
       "title": "Material A",
       "shortTitle": "Mat A",
+      "abbreviation": "M:A",
       "parameters": {
         "1": {
           "label": "Hue",
-          "shortLabel": "Hue"
+          "shortLabel": "Hue",
+          "enabled": true
         },
         "2": {
           "label": "Luminance",
-          "shortLabel": "Lum"
+          "shortLabel": "Lum",
+          "enabled": true
         },
         "3": {
           "label": "",
-          "shortLabel": ""
+          "shortLabel": "",
+          "enabled": false
         },
         "4": {
           "label": "Light Y",
-          "shortLabel": "Lt Y"
+          "shortLabel": "Lt Y",
+          "enabled": true
         },
         "5": {
           "label": "Light Ambient",
-          "shortLabel": "Lt Amb"
+          "shortLabel": "Lt Amb",
+          "enabled": true
         },
         "6": {
           "label": "Light X",
-          "shortLabel": "Lt X"
+          "shortLabel": "Lt X",
+          "enabled": true
         },
         "7": {
           "label": "Shinyness",
-          "shortLabel": "Shiny"
+          "shortLabel": "Shiny",
+          "enabled": true
         },
         "8": {
           "label": "Chrominance",
-          "shortLabel": "Chrom"
+          "shortLabel": "Chrom",
+          "enabled": true
         }
       }
     },
     "8": {
       "title": "Geometry A",
       "shortTitle": "Geo A",
+      "abbreviation": "G:A",
       "parameters": {
         "1": {
           "label": "D3 | Z Width",
-          "shortLabel": "D3 Z"
+          "shortLabel": "D3 Z",
+          "enabled": true
         },
         "2": {
           "label": "D2 | Y Width",
-          "shortLabel": "D2 Y"
+          "shortLabel": "D2 Y",
+          "enabled": true
         },
         "3": {
           "label": "Shell / FBM",
-          "shortLabel": "Shell"
+          "shortLabel": "Shell",
+          "enabled": true
         },
         "4": {
           "label": "Mirror Mode",
-          "shortLabel": "Mirror"
+          "shortLabel": "Mirror",
+          "enabled": true
         },
         "5": {
           "label": "Shape select",
-          "shortLabel": "Shape"
+          "shortLabel": "Shape",
+          "enabled": true
         },
         "6": {
           "label": "Twist",
-          "shortLabel": "Twist"
+          "shortLabel": "Twist",
+          "enabled": true
         },
         "7": {
           "label": "",
-          "shortLabel": ""
+          "shortLabel": "",
+          "enabled": false
         },
         "8": {
           "label": "D1 | X Width",
-          "shortLabel": "D1 X"
+          "shortLabel": "D1 X",
+          "enabled": true
         }
       }
+    }
+  },
+  "modulation": {
+    "1": {
+      "label": "Audio Follower Slew"
+    },
+    "2": {
+      "label": "Audio Follower Amplitude"
+    },
+    "3": {
+      "label": "Mod Speed"
+    },
+    "4": {
+      "label": "Mod Amplitude"
+    },
+    "5": {
+      "label": "Mod Shape"
     }
   }
 }
