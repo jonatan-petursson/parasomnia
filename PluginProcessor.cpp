@@ -18,7 +18,7 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
     paramIds.reserve(200);
 
     auto globalGroup = std::make_unique<juce::AudioProcessorParameterGroup>("global", "Global", "|");
-    globalGroup->addChild(std::make_unique<juce::AudioParameterFloat>("smoothing", "Smoothing", 0.0f, 0.9f, 0.0f));
+    globalGroup->addChild(std::make_unique<juce::AudioParameterFloat>("smoothing", "Smoothing", 0.0f, 0.9f, 0.9f));
     paramIds.push_back("smoothing");
 
     groups.push_back(std::move(globalGroup));
@@ -72,7 +72,7 @@ VzzzPluginAudioProcessor::~VzzzPluginAudioProcessor()
         midiOutput.reset();
 }
 
-void VzzzPluginAudioProcessor::incrementParameter(const juce::String &paramId, bool increment)
+void VzzzPluginAudioProcessor::incrementModulationParameter(const juce::String &paramId, bool increment)
 {
     juce::StringArray parts;
     parts.addTokens(paramId, "_", "\"");
@@ -129,10 +129,10 @@ void VzzzPluginAudioProcessor::openPage(int page)
 void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
 {
     std::size_t size = message.getNumBytesAsUTF8();
-    char messageChars[size];
-    message.copyToUTF8(messageChars, size);
+    auto messageChars = std::make_unique<char[]>(size);
+    message.copyToUTF8(messageChars.get(), size);
 
-    juce::Span<std::byte> byteSpan(reinterpret_cast<std::byte *>(messageChars), size);
+    juce::Span<std::byte> byteSpan(reinterpret_cast<std::byte *>(messageChars.get()), size);
     juce::MidiMessage sysexMessage = juce::MidiMessage::createSysExMessage(byteSpan);
 
     if (midiOutput != nullptr)
@@ -140,10 +140,6 @@ void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
         juce::Logger::writeToLog("Sending sysex message: " + message + " bytes: " + sysexMessage.getDescription());
         midiOutput->sendMessageNow(sysexMessage);
     }
-}
-
-void VzzzPluginAudioProcessor::updateModulation(int page, int param, int modulation, int value)
-{
 }
 
 void VzzzPluginAudioProcessor::updateSmoothing(float value)
@@ -189,11 +185,11 @@ void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId,
 
     if (parts.size() == 4)
     {
-        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc, newValue));
+        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc, (int)newValue));
     }
     else if (parts.size() == 5 && parts[4] == "modSpeed")
     {
-        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc + 65, newValue));
+        sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc + 65, (int)newValue));
     }
     else
     {
@@ -318,15 +314,9 @@ void VzzzPluginAudioProcessor::sendMidiMessage(const juce::MidiMessage &message)
 void VzzzPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                             juce::MidiBuffer &midiMessages)
 {
-
     juce::ignoreUnused(midiMessages);
-
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    for (auto i = 0; i < totalNumOutputChannels; ++i)
-        buffer.clear(i, 0, buffer.getNumSamples());
+    buffer.clear();
 }
 
 //==============================================================================

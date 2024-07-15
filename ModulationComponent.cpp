@@ -11,27 +11,27 @@ ModulationComponent::ModulationComponent(VzzzPluginAudioProcessor &p, int page, 
                                                                                              audioFollowerAmplitude(
                                                                                                  "Audio Follower Amplitude",
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), true); },
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), true); },
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), false); }),
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), false); }),
                                                                                              audioFollowerSlew(
                                                                                                  "Audio Follower Slew",
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), true); },
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), true); },
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), false); }),
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), false); }),
                                                                                              modAmplitude(
                                                                                                  "Modulation Amplitude",
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), true); },
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), true); },
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), false); }),
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), false); }),
                                                                                              modShape(
                                                                                                  "Modulation Shape",
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), true); },
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), true); },
                                                                                                  [&p, page, param]()
-                                                                                                 { p.incrementParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), false); }),
+                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), false); }),
                                                                                              resetButton("Reset", ParamInfoProvider::getParamName(page, param) + "_reset")
 
 {

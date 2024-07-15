@@ -9,12 +9,11 @@ VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioPr
     : AudioProcessorEditor(&p),
       processorRef(p),
       tabController(juce::TabbedButtonBar::TabsAtTop),
-      globalLabel("Global", "Global"),
       smoothingSlider("Smoothing", *p.parameters->getParameter("smoothing")),
       renderScaleControl("Render Scale", [&p]()
                          { p.incrementRenderScale(false); }, [&p]()
                          { p.incrementRenderScale(true); }),
-      initButton("Init", "Init"), lookAndFeel()
+      initButton("Init", "Init"), globalLabel("Global", "Global"), lookAndFeel()
 {
     setLookAndFeel(&lookAndFeel);
 
@@ -98,7 +97,7 @@ void VzzzPluginAudioProcessorEditor::buttonClicked(juce::String button)
 void VzzzPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
-    auto controlsArea = area.removeFromBottom(getHeight() * 0.15);
+    auto controlsArea = area.removeFromBottom((int)(getHeight() * 0.15));
 
     tabController.setBounds(area);
 

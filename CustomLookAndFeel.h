@@ -8,6 +8,8 @@ public:
     void drawButtonBackground(juce::Graphics &g, juce::Button &button, const juce::Colour &backgroundColour,
                               bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
     {
+        juce::ignoreUnused(backgroundColour);
+
         auto bounds = button.getLocalBounds().toFloat();
         auto baseColour = juce::Colours::black.withAlpha(0.2f);
 
@@ -42,6 +44,8 @@ public:
 
     Font getTabButtonFont(TabBarButton &b, float height) override
     {
+        juce::ignoreUnused(height);
+
         return withDefaultMetrics(FontOptions{15.0f, b.isFrontTab() ? Font::bold : Font::plain});
     }
 

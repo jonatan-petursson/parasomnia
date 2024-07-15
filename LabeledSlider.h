@@ -5,7 +5,7 @@
 class LabeledSlider : public juce::Component
 {
 public:
-    LabeledSlider(const juce::String &labelText, juce::RangedAudioParameter &parameter, std::function<void()> onClick = []() {});
+    LabeledSlider(const juce::String &labelText, juce::RangedAudioParameter &parameter, std::function<void()> onClickHandler = []() {});
 
     void resized() override;
 

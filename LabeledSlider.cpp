@@ -4,9 +4,9 @@
 LabeledSlider::LabeledSlider(
     const juce::String &labelText,
     juce::RangedAudioParameter &parameter,
-    std::function<void()> onClick) : attachment(std::make_unique<juce::SliderParameterAttachment>(parameter, slider)),
-                                     onClick(onClick),
-                                     label(labelText, labelText)
+    std::function<void()> onClickHandler) : label(labelText, labelText),
+                                            attachment(std::make_unique<juce::SliderParameterAttachment>(parameter, slider)),
+                                            onClick(onClickHandler)
 {
     this->addMouseListener(this, true);
 

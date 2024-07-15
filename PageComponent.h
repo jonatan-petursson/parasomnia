@@ -14,7 +14,6 @@ public:
 
     void resized() override;
     void visibilityChanged() override;
-    void mouseDown(const juce::MouseEvent &event) override;
 
 private:
     VzzzPluginAudioProcessor &processorRef;
@@ -29,8 +28,6 @@ private:
 
     juce::TabbedComponent modulationTabs;
 
-    juce::DrawableButton leftButton;
-    juce::DrawableButton rightButton;
     juce::DrawableButton centerButton;
 
     juce::Label pageLabel;

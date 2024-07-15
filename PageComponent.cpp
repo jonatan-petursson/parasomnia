@@ -5,15 +5,13 @@
 PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcessorEditor &pe, int pageArg)
     : processorRef(p),
       processorEditorRef(pe),
-      leftButton("Left", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
-      rightButton("Right", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
-      centerButton("Center", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
       modulationTabs(juce::TabbedButtonBar::Orientation::TabsAtTop),
-      page(pageArg),
-      pageLabel(ParamInfoProvider::getPageShortTitle(pageArg), ParamInfoProvider::getPageTitle(pageArg))
+      centerButton("Center", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
+      pageLabel(ParamInfoProvider::getPageShortTitle(pageArg), ParamInfoProvider::getPageTitle(pageArg)),
+      page(pageArg)
 {
 
-    pageLabel.setFont(juce::Font(15.0f));
+    pageLabel.setFont(FontOptions(15.0f));
     pageLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(pageLabel);
 
@@ -56,40 +54,20 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
 
     const juce::Drawable *drawableRef = &drawable;
     const juce::Drawable *drawableOverRef = &drawableOver;
-
-    leftButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
-    rightButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
+    ;
     centerButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
 
     centerButton.setButtonStyle(juce::DrawableButton::ButtonStyle::ImageFitted);
 
-    leftButton.setButtonText("Left");
-    // addAndMakeVisible(leftButton);
-    rightButton.setButtonText("Right");
-    // addAndMakeVisible(rightButton);
     centerButton.setButtonText("Center");
     addAndMakeVisible(centerButton);
 
-    leftButton.onClick = [&pe]
-    { pe.buttonClicked("left"); };
-    rightButton.onClick = [&pe]
-    { pe.buttonClicked("right"); };
     centerButton.onClick = [&pe]
     { pe.buttonClicked("center"); };
 
     modulationTabs.setTabBarDepth(0);
     modulationTabs.setColour(juce::TabbedComponent::ColourIds::outlineColourId, juce::Colours::transparentBlack);
     setSize(400, 500);
-}
-
-void PageComponent::mouseDown(const juce::MouseEvent &event)
-{
-    juce::Logger::writeToLog("Mouse down event: x=" + juce::String(event.x) + ", y=" + juce::String(event.y));
-
-    if (event.mods.isLeftButtonDown())
-    {
-        juce::Slider *slider = dynamic_cast<juce::Slider *>(event.eventComponent);
-    }
 }
 
 PageComponent::~PageComponent()
@@ -131,7 +109,7 @@ void PageComponent::resized()
     auto gridInnerBounds = juce::Rectangle<int>(0, 0, minDimension, minDimension).withCentre(gridBounds.getCentre());
 
     // Calculate relative margins
-    float relativeMargin = minDimension * 0.1f; // 10% of the grid size
+    int relativeMargin = (int)(minDimension * 0.1f); // 10% of the grid size
 
     gridInnerBounds.expand(relativeMargin, relativeMargin);
 

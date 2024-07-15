@@ -14,6 +14,7 @@ public:
     void resized() override;
 
 private:
+    juce::Label label;
     LabeledSlider modSpeedSlider;
     IncrementDecrementComponent audioFollowerAmplitude;
     IncrementDecrementComponent audioFollowerSlew;
@@ -21,7 +22,6 @@ private:
     IncrementDecrementComponent modShape;
     juce::TextButton resetButton;
     juce::OwnedArray<juce::SliderParameterAttachment> attachments;
-    juce::Label label;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulationComponent)
 };

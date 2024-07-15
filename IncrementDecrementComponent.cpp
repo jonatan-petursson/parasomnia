@@ -1,10 +1,12 @@
 #include "IncrementDecrementComponent.h"
 
 IncrementDecrementComponent::IncrementDecrementComponent(juce::String labelText, std::function<void()> incrementCallback, std::function<void()> decrementCallback)
-    : IncrementCallback(std::move(incrementCallback)), DecrementCallback(std::move(decrementCallback)), label(labelText, labelText)
+    : label(labelText, labelText),
+      IncrementCallback(std::move(incrementCallback)),
+      DecrementCallback(std::move(decrementCallback))
 {
     label.setJustificationType(Justification::centred);
-    label.setFont(Font(14.0f));
+    label.setFont(FontOptions(14.0f));
     label.setColour(Label::textColourId, Colours::white);
     addAndMakeVisible(label);
 

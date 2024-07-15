@@ -61,11 +61,10 @@ public:
     static juce::String getModShapeParamName(int page, int param) { return getParamName(page, param) + " Modulation Shape"; }
     static juce::String getModShapeParamId(int page, int param) { return getParamId(page, param) + "_modShape"; }
 
-    void incrementParameter(const juce::String &paramId, bool increment);
+    void incrementModulationParameter(const juce::String &paramId, bool increment);
     void incrementRenderScale(bool increment);
 
     void updateSmoothing(float smoothing);
-    void updateModulation(int page, int param, int modulation, int value);
     void resetModulation(int page, int param);
     void init();
 
