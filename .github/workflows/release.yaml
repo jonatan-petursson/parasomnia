@@ -33,7 +33,6 @@ jobs:
         run: |
           mkdir -p artifact/Vzzz-VST3-MacOS
           cp -r build/vzzz_artefacts/Release/VST3/vzzz.vst3 artifact/Vzzz-VST3-MacOS
-          cp INSTALL.md artifact/Vzzz-VST3-MacOS
           cd artifact
           zip -r ../Vzzz-VST3-MacOS.zip .
 
@@ -44,7 +43,6 @@ jobs:
         run: |
           mkdir -p artifact/Vzzz-Standalone-MacOS
           cp -r build/vzzz_artefacts/Release/Standalone/vzzz.app artifact/Vzzz-Standalone-MacOS
-          cp INSTALL.md artifact/Vzzz-Standalone-MacOS
           cd artifact
           zip -r ../Vzzz-Standalone-MacOS.zip .
 
