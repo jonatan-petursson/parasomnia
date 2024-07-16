@@ -11,15 +11,24 @@ IncrementDecrementComponent::IncrementDecrementComponent(juce::String labelText,
     addAndMakeVisible(label);
 
     IncrementButton.setButtonText("+");
+    IncrementButton.setTriggeredOnMouseDown(true);
     IncrementButton.onClick = [this]
-    { IncrementCallback(); };
-    IncrementButton.setRepeatSpeed(300, 100);
+    {
+        IncrementButton.setColour(juce::TextButton::buttonColourId, juce::Colour::fromRGB(71, 71, 181).darker(0.8f));
+        startTimer(50);
+        IncrementCallback(); };
+    IncrementButton.setRepeatSpeed(500, 200, 100);
+
     addAndMakeVisible(IncrementButton);
 
     DecrementButton.setButtonText("-");
+    DecrementButton.setTriggeredOnMouseDown(true);
     DecrementButton.onClick = [this]
-    { DecrementCallback(); };
-    DecrementButton.setRepeatSpeed(300, 100);
+    {
+        DecrementButton.setColour(juce::TextButton::buttonColourId, juce::Colour::fromRGB(71, 71, 181).darker(0.8f));
+        startTimer(50);
+        DecrementCallback(); };
+    DecrementButton.setRepeatSpeed(500, 200, 100);
     addAndMakeVisible(DecrementButton);
 }
 
@@ -33,4 +42,10 @@ void IncrementDecrementComponent::resized()
     area.removeFromTop(2);
     DecrementButton.setBounds(area.removeFromTop(buttonHeight));
     label.setBounds(area);
+}
+
+void IncrementDecrementComponent::timerCallback()
+{
+    IncrementButton.removeColour(juce::TextButton::buttonColourId);
+    DecrementButton.removeColour(juce::TextButton::buttonColourId);
 }

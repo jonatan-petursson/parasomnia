@@ -15,11 +15,14 @@ public:
     juce::Label label;
     juce::Label &getLabel() { return label; }
 
-    void mouseUp(const juce::MouseEvent &event) override;
+    void mouseDown(const juce::MouseEvent &event) override;
+    void setSelected(bool isSelected);
+    void paint(juce::Graphics &g) override;
 
 private:
     std::unique_ptr<juce::SliderParameterAttachment> attachment;
     std::function<void()> onClick;
+    bool isSelected = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LabeledSlider)
 };

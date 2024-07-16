@@ -64,6 +64,9 @@ public:
     void incrementModulationParameter(const juce::String &paramId, bool increment);
     void incrementRenderScale(bool increment);
 
+    juce::Array<MidiDeviceInfo> getAvailableMidiDevices();
+    void changeMidiOutputDevice(const juce::String &deviceIdentifier);
+
     void updateSmoothing(float smoothing);
     void resetModulation(int page, int param);
     void init();

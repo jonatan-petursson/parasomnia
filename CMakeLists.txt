@@ -70,7 +70,8 @@ target_sources(vzzz
         ModulationComponent.cpp
         ParamInfoProvider.cpp
         LabeledSlider.cpp
-        IncrementDecrementComponent.cpp)
+        IncrementDecrementComponent.cpp
+        MidiDeviceSelector.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use

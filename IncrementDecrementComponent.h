@@ -2,7 +2,7 @@
 
 #include <JuceHeader.h>
 
-class IncrementDecrementComponent : public juce::Component
+class IncrementDecrementComponent : public juce::Component, private juce::Timer
 {
 public:
     IncrementDecrementComponent(juce::String labelText, std::function<void()> incrementCallback, std::function<void()> decrementCallback);
@@ -19,4 +19,6 @@ private:
 
     std::function<void()> IncrementCallback;
     std::function<void()> DecrementCallback;
+
+    void timerCallback() override;
 };

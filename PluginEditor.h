@@ -7,6 +7,7 @@ class PageComponent;
 #include "IncrementDecrementComponent.h"
 #include "LabeledSlider.h"
 #include "CustomLookAndFeel.h"
+#include "MidiDeviceSelector.h"
 //==============================================================================
 class VzzzPluginAudioProcessorEditor final : public juce::AudioProcessorEditor
 {
@@ -40,6 +41,7 @@ private:
     IncrementDecrementComponent renderScaleControl;
     juce::TextButton initButton;
     juce::Label globalLabel;
+    MidiDeviceSelector midiDeviceSelector;
 
     CustomLookAndFeel lookAndFeel;
 

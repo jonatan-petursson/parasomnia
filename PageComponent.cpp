@@ -18,9 +18,19 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
     for (int i = 1; i <= 8; ++i)
     {
         LabeledSlider *ls = new LabeledSlider(
-            ParamInfoProvider::getParamShortLabel(page, i),
+            ParamInfoProvider::getParamLabel(page, i),
             *p.parameters->getParameter(VzzzPluginAudioProcessor::getParamId(page, i)), [this, i]()
-            { modulationTabs.setCurrentTabIndex(i - 1); });
+            {
+                for(auto lsl : labeledSliders){
+                    lsl->setSelected(false);
+                }
+                labeledSliders[i-1]->setSelected(true);
+                modulationTabs.setCurrentTabIndex(i - 1); });
+
+        if (i == 1)
+        {
+            ls->setSelected(true);
+        }
 
         addAndMakeVisible(ls);
         labeledSliders.add(ls);
@@ -54,7 +64,7 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
 
     const juce::Drawable *drawableRef = &drawable;
     const juce::Drawable *drawableOverRef = &drawableOver;
-    ;
+
     centerButton.setImages(drawableRef, drawableOverRef, nullptr, nullptr, nullptr);
 
     centerButton.setButtonStyle(juce::DrawableButton::ButtonStyle::ImageFitted);
@@ -66,6 +76,7 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
     { pe.buttonClicked("center"); };
 
     modulationTabs.setTabBarDepth(0);
+    modulationTabs.setColour(juce::TabbedComponent::ColourIds::backgroundColourId, juce::Colour::fromRGB(71, 71, 181).brighter(0.05f));
     modulationTabs.setColour(juce::TabbedComponent::ColourIds::outlineColourId, juce::Colours::transparentBlack);
     setSize(400, 500);
 }
@@ -97,7 +108,7 @@ void PageComponent::resized()
 
     auto totalBounds = getLocalBounds();
 
-    totalBounds.removeFromTop(20);
+    totalBounds.removeFromTop(10);
     auto headerBounds = totalBounds.removeFromTop(20);
     pageLabel.setBounds(headerBounds);
 
@@ -128,11 +139,11 @@ void PageComponent::resized()
         Gi());
 
     grid.items.add(
-        Gi(labeledSliders[6]).withMargin(Gi::Margin(0, -relativeMargin * 2, 0, 0)),
+        Gi(labeledSliders[6]).withMargin(Gi::Margin(0, -relativeMargin, 0, relativeMargin)),
         Gi(),
         Gi(centerButton).withMargin(Gi::Margin(relativeMargin * 0.5f)),
         Gi(),
-        Gi(labeledSliders[2]).withMargin(Gi::Margin(0, 0, 0, -relativeMargin * 2)));
+        Gi(labeledSliders[2]).withMargin(Gi::Margin(0, relativeMargin, 0, -relativeMargin)));
 
     grid.items.add(
         Gi(),

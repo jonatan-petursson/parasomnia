@@ -149,7 +149,7 @@ void VzzzPluginAudioProcessor::updateSmoothing(float value)
 
 void VzzzPluginAudioProcessor::resetModulation(int page, int param)
 {
-    sendSysExMessage("reset," + juce::String(page) + "," + juce::String(param) + ",");
+    sendSysExMessage("reset," + juce::String(1) + "," + juce::String(((page - 1) * 8) + param) + ",");
 }
 
 void VzzzPluginAudioProcessor::init()
@@ -167,9 +167,6 @@ void VzzzPluginAudioProcessor::init()
 
 void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId, float newValue)
 {
-
-    juce::Logger::writeToLog("Parameter changed: " + parameterId + ", new value: " + juce::String(newValue));
-    // Handle global smoothing param
     if (parameterId == "smoothing")
     {
         updateSmoothing(newValue);
@@ -185,6 +182,7 @@ void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId,
 
     if (parts.size() == 4)
     {
+        juce::Logger::writeToLog("Sending CC " + juce::String(cc) + " value " + juce::String(newValue) + " for parameter " + parameterId);
         sendMidiMessage(juce::MidiMessage::controllerEvent(1, cc, (int)newValue));
     }
     else if (parts.size() == 5 && parts[4] == "modSpeed")
@@ -270,7 +268,33 @@ void VzzzPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBl
     juce::ignoreUnused(sampleRate, samplesPerBlock);
 
     if (midiOutput == nullptr)
+    {
+        auto devs = juce::MidiOutput::getAvailableDevices();
         midiOutput = juce::MidiOutput::openDevice(juce::MidiOutput::getDefaultDevice().identifier);
+    }
+}
+
+juce::Array<MidiDeviceInfo> VzzzPluginAudioProcessor::getAvailableMidiDevices()
+{
+    return juce::MidiOutput::getAvailableDevices();
+}
+
+void VzzzPluginAudioProcessor::changeMidiOutputDevice(const juce::String &deviceIdentifier)
+{
+    if (midiOutput != nullptr)
+    {
+        if (midiOutput->getDeviceInfo().identifier == deviceIdentifier)
+            return;
+
+        juce::Logger::writeToLog("Changing MIDI output device from " + midiOutput->getDeviceInfo().name);
+
+        midiOutput->stopBackgroundThread();
+        midiOutput = nullptr;
+    }
+
+    juce::Logger::writeToLog("Opening MIDI output device: " + deviceIdentifier);
+
+    midiOutput = juce::MidiOutput::openDevice(deviceIdentifier);
 }
 
 void VzzzPluginAudioProcessor::releaseResources()
@@ -306,7 +330,7 @@ void VzzzPluginAudioProcessor::sendMidiMessage(const juce::MidiMessage &message)
 {
     if (midiOutput != nullptr)
     {
-        juce::Logger::writeToLog("MIDI Message Sent: " + message.getDescription());
+        juce::Logger::writeToLog("Sending MIDI message: " + juce::String(message.getControllerNumber()) + " " + juce::String(message.getControllerValue()));
         midiOutput->sendMessageNow(message);
     }
 }

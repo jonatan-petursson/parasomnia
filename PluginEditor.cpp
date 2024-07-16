@@ -13,7 +13,7 @@ VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioPr
       renderScaleControl("Render Scale", [&p]()
                          { p.incrementRenderScale(false); }, [&p]()
                          { p.incrementRenderScale(true); }),
-      initButton("Init", "Init"), globalLabel("Global", "Global"), lookAndFeel()
+      initButton("Init", "Init"), globalLabel("Global", "Global"), midiDeviceSelector(p), lookAndFeel()
 {
     setLookAndFeel(&lookAndFeel);
 
@@ -25,12 +25,13 @@ VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioPr
         }
     }
 
-    getConstrainer()->setFixedAspectRatio(0.7);
+    getConstrainer()->setFixedAspectRatio(0.6);
 
     addAndMakeVisible(globalLabel);
     addAndMakeVisible(smoothingSlider);
     addAndMakeVisible(renderScaleControl);
     addAndMakeVisible(initButton);
+    addAndMakeVisible(midiDeviceSelector);
 
     initButton.onClick = [&p]()
     { p.init(); };
@@ -42,6 +43,7 @@ VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioPr
 
     tabController.setSize(400, 400);
     tabController.setColour(juce::TabbedComponent::ColourIds::outlineColourId, juce::Colours::transparentBlack);
+    // tabController.setColour(juce::TabbedComponent::ColourIds::backgroundColourId, juce::Colours::black.withAlpha(0.05f));
     tabController.setTabBarDepth(40);
     tabController.getTabbedButtonBar().setColour(juce::TabbedButtonBar::ColourIds::tabOutlineColourId, juce::Colours::transparentBlack);
     tabController.getTabbedButtonBar().setColour(juce::TabbedButtonBar::ColourIds::frontOutlineColourId, juce::Colours::transparentBlack);
@@ -65,6 +67,10 @@ void VzzzPluginAudioProcessorEditor::paint(juce::Graphics &g)
 
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);
+
+    g.setColour(juce::Colours::white.withAlpha(0.1f));
+    auto controlsArea = getLocalBounds().removeFromBottom((int)(getHeight() * 0.20));
+    g.fillRect(controlsArea.toFloat());
 }
 
 void VzzzPluginAudioProcessorEditor::updateSliders()
@@ -97,16 +103,21 @@ void VzzzPluginAudioProcessorEditor::buttonClicked(juce::String button)
 void VzzzPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
-    auto controlsArea = area.removeFromBottom((int)(getHeight() * 0.15));
+    auto controlsArea = area.removeFromBottom((int)(getHeight() * 0.20));
 
     tabController.setBounds(area);
 
     auto controlWidth = controlsArea.getWidth() / 3;
 
+    controlsArea.removeFromTop(10);
     globalLabel.setBounds(controlsArea.removeFromTop(20));
     globalLabel.setJustificationType(juce::Justification::centred);
+
+    auto footerArea = controlsArea.removeFromBottom(30);
 
     smoothingSlider.setBounds(controlsArea.removeFromLeft(controlWidth).reduced(10));
     renderScaleControl.setBounds(controlsArea.removeFromLeft(controlWidth).reduced(10));
     initButton.setBounds(controlsArea.removeFromLeft(controlWidth).reduced(10));
+
+    midiDeviceSelector.setBounds(footerArea.removeFromLeft(200).reduced(5).withLeft(10));
 }

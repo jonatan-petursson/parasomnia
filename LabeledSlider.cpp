@@ -18,7 +18,7 @@ LabeledSlider::LabeledSlider(
     addAndMakeVisible(label);
 }
 
-void LabeledSlider::mouseUp(const juce::MouseEvent &event)
+void LabeledSlider::mouseDown(const juce::MouseEvent &event)
 {
     if (event.mods.isLeftButtonDown())
     {
@@ -26,17 +26,35 @@ void LabeledSlider::mouseUp(const juce::MouseEvent &event)
     }
 }
 
+void LabeledSlider::setSelected(bool isSelected)
+{
+    this->isSelected = isSelected;
+    this->repaint();
+}
+
+void LabeledSlider::paint(juce::Graphics &g)
+{
+    if (isSelected)
+    {
+        g.setColour(juce::Colour::fromRGB(71, 71, 181).brighter(0.05f));
+        g.fillRoundedRectangle(getLocalBounds().toFloat(), 6.0f);
+    }
+
+    juce::Component::paint(g);
+}
+
 void LabeledSlider::resized()
 {
     auto area = getLocalBounds();
 
     // Reserve space for the label at the bottom
-    auto labelHeight = 20;
+    auto labelHeight = 30;
     auto labelArea = area.removeFromBottom(labelHeight);
 
     // Position the slider
     slider.setBounds(area);
 
     // Position the label
+    labelArea.removeFromBottom(10);
     label.setBounds(labelArea);
 }
