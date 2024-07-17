@@ -1,4 +1,4 @@
-name: Build MacOS VST3 Release
+name: Build MacOS Release
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    name: Build and Upload Release Asset
+    name: Build, Sign and Upload Release Asset
     runs-on: macos-latest
 
     steps:
@@ -27,24 +27,87 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build VST3
-        run: cmake --build ${{github.workspace}}/build --target vzzz_VST3 --config Release
-
-      - name: Package VST3
         run: |
+          cmake --build ${{github.workspace}}/build --target vzzz_VST3 --config Release
           mkdir -p artifact/Vzzz-VST3-MacOS
           cp -r build/vzzz_artefacts/Release/VST3/vzzz.vst3 artifact/Vzzz-VST3-MacOS
-          cd artifact
-          zip -r ../Vzzz-VST3-MacOS.zip .
 
       - name: Build Standalone
-        run: cmake --build ${{github.workspace}}/build --target vzzz_Standalone --config Release
-
-      - name: Package Standalone
         run: |
+          cmake --build ${{github.workspace}}/build --target vzzz_Standalone --config Release
           mkdir -p artifact/Vzzz-Standalone-MacOS
           cp -r build/vzzz_artefacts/Release/Standalone/vzzz.app artifact/Vzzz-Standalone-MacOS
+
+      - name: Sign packages
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+        run: |
+          # Create a temporary keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          security create-keychain -p "$APPLE_CERTIFICATE_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_CERTIFICATE_PASSWORD" $KEYCHAIN_PATH
+
+          # Import certificate to keychain
+          echo $APPLE_CERTIFICATE_BASE64 | base64 --decode > certificate.p12
+          security import certificate.p12 -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # Sign the VST3
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Vzzz-VST3-MacOS/vzzz.vst3
+
+          # Sign the Standalone
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Vzzz-Standalone-MacOS/vzzz.app
+
+          # Clean up
+          security delete-keychain $KEYCHAIN_PATH
+
+      - name: Notarize Standalone and VST3
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: |
+          echo "Starting notarization process..."
+
+          # Create a temporary keychain for notarization
+          KEYCHAIN_PATH=$RUNNER_TEMP/notarization.keychain-db
+          security create-keychain -p "temp_password" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "temp_password" $KEYCHAIN_PATH
+
+          # Store credentials securely
+          xcrun notarytool store-credentials "notarytool-profile" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --keychain $KEYCHAIN_PATH
+
+          # Create a zip of the artifact directory
+          zip -r notarization.zip artifact
+
+          # Submit for notarization
+          xcrun notarytool submit notarization.zip \
+            --keychain $KEYCHAIN_PATH \
+            --keychain-profile "notarytool-profile" \
+            --wait
+
+          # Staple the notarization ticket to both the app and the VST3
+          xcrun stapler staple "artifact/Vzzz-Standalone-MacOS/vzzz.app"
+          xcrun stapler staple "artifact/Vzzz-VST3-MacOS/vzzz.vst3"
+
+          # Clean up
+          security delete-keychain $KEYCHAIN_PATH
+          rm notarization.zip
+
+      - name: Package
+        run: |
           cd artifact
-          zip -r ../Vzzz-Standalone-MacOS.zip .
+          zip -r ../Vzzz-VST3-MacOS.zip Vzzz-VST3-MacOS
+          zip -r ../Vzzz-Standalone-MacOS.zip Vzzz-Standalone-MacOS
 
       - name: Release
         uses: softprops/action-gh-release@v2
