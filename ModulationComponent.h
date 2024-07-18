@@ -7,7 +7,7 @@
 class ModulationComponent : public juce::Component
 {
 public:
-    ModulationComponent(VzzzPluginAudioProcessor &p, int page, int param);
+    ModulationComponent(ParasomniaPluginAudioProcessor &p, int page, int param);
     ~ModulationComponent() override;
 
     void paint(juce::Graphics &g) override;

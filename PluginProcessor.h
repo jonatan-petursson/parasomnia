@@ -3,12 +3,12 @@
 #include <JuceHeader.h>
 #include "ParamInfoProvider.h"
 //==============================================================================
-class VzzzPluginAudioProcessor final : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
+class ParasomniaPluginAudioProcessor final : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
-    VzzzPluginAudioProcessor();
-    ~VzzzPluginAudioProcessor() override;
+    ParasomniaPluginAudioProcessor();
+    ~ParasomniaPluginAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -82,5 +82,5 @@ private:
     void parameterChanged(const juce::String &parameterId, float newValue) override;
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VzzzPluginAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ParasomniaPluginAudioProcessor)
 };

@@ -6,7 +6,7 @@ class MidiDeviceSelector : public juce::Component,
                            public juce::ComboBox::Listener
 {
 public:
-    MidiDeviceSelector(VzzzPluginAudioProcessor &p);
+    MidiDeviceSelector(ParasomniaPluginAudioProcessor &p);
     ~MidiDeviceSelector() override;
 
     void resized() override;
@@ -16,7 +16,7 @@ public:
     juce::String getSelectedDeviceName() const;
 
 private:
-    VzzzPluginAudioProcessor &processorRef;
+    ParasomniaPluginAudioProcessor &processorRef;
     juce::ComboBox midiDeviceDropdown;
     std::vector<juce::MidiDeviceInfo> midiDevices;
 

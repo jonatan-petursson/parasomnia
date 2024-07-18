@@ -2,7 +2,7 @@
 #include "PluginEditor.h"
 #include "ParamInfoProvider.h"
 
-PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcessorEditor &pe, int pageArg)
+PageComponent::PageComponent(ParasomniaPluginAudioProcessor &p, ParasomniaPluginAudioProcessorEditor &pe, int pageArg)
     : processorRef(p),
       modulationTabs(juce::TabbedButtonBar::Orientation::TabsAtTop),
       centerButton("Center", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
@@ -18,7 +18,7 @@ PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcess
     {
         LabeledSlider *ls = new LabeledSlider(
             ParamInfoProvider::getParamLabel(page, i),
-            *p.parameters->getParameter(VzzzPluginAudioProcessor::getParamId(page, i)), [this, i]()
+            *p.parameters->getParameter(ParasomniaPluginAudioProcessor::getParamId(page, i)), [this, i]()
             {
                 for(auto lsl : labeledSliders){
                     lsl->setSelected(false);

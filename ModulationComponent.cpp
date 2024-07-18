@@ -2,37 +2,37 @@
 #include "PageComponent.h"
 #include "ParamInfoProvider.h"
 
-ModulationComponent::ModulationComponent(VzzzPluginAudioProcessor &p, int page, int param) : label(ParamInfoProvider::getParamName(page, param),
-                                                                                                   ParamInfoProvider::getParamLabel(page, param) + " Modulation"),
-                                                                                             modSpeedSlider(
-                                                                                                 "Mod Speed",
-                                                                                                 *p.parameters->getParameter(VzzzPluginAudioProcessor::getModSpeedParamId(page, param)),
-                                                                                                 []() {}),
-                                                                                             audioFollowerAmplitude(
-                                                                                                 "Audio Foll. Amp.",
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), true); },
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), false); }),
-                                                                                             audioFollowerSlew(
-                                                                                                 "Audio Foll. Slew",
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), true); },
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), false); }),
-                                                                                             modAmplitude(
-                                                                                                 "Modulation Amp.",
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), true); },
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModAmplitudeParamId(page, param), false); }),
-                                                                                             modShape(
-                                                                                                 "Modulation Shape",
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), true); },
-                                                                                                 [&p, page, param]()
-                                                                                                 { p.incrementModulationParameter(VzzzPluginAudioProcessor::getModShapeParamId(page, param), false); }),
-                                                                                             resetButton("Reset", ParamInfoProvider::getParamName(page, param) + "_reset")
+ModulationComponent::ModulationComponent(ParasomniaPluginAudioProcessor &p, int page, int param) : label(ParamInfoProvider::getParamName(page, param),
+                                                                                                         ParamInfoProvider::getParamLabel(page, param) + " Modulation"),
+                                                                                                   modSpeedSlider(
+                                                                                                       "Mod Speed",
+                                                                                                       *p.parameters->getParameter(ParasomniaPluginAudioProcessor::getModSpeedParamId(page, param)),
+                                                                                                       []() {}),
+                                                                                                   audioFollowerAmplitude(
+                                                                                                       "Audio Foll. Amp.",
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), true); },
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getAudioFollowerAmplitudeParamId(page, param), false); }),
+                                                                                                   audioFollowerSlew(
+                                                                                                       "Audio Foll. Slew",
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), true); },
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getAudioFollowerSlewParamId(page, param), false); }),
+                                                                                                   modAmplitude(
+                                                                                                       "Modulation Amp.",
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getModAmplitudeParamId(page, param), true); },
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getModAmplitudeParamId(page, param), false); }),
+                                                                                                   modShape(
+                                                                                                       "Modulation Shape",
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getModShapeParamId(page, param), true); },
+                                                                                                       [&p, page, param]()
+                                                                                                       { p.incrementModulationParameter(ParasomniaPluginAudioProcessor::getModShapeParamId(page, param), false); }),
+                                                                                                   resetButton("Reset", ParamInfoProvider::getParamName(page, param) + "_reset")
 
 {
     addAndMakeVisible(modSpeedSlider);
@@ -44,7 +44,7 @@ ModulationComponent::ModulationComponent(VzzzPluginAudioProcessor &p, int page, 
 
     resetButton.onClick = [&p, page, param]()
     {
-        p.parameters->getParameter(VzzzPluginAudioProcessor::getModSpeedParamId(page, param))->setValueNotifyingHost(0.5f);
+        p.parameters->getParameter(ParasomniaPluginAudioProcessor::getModSpeedParamId(page, param))->setValueNotifyingHost(0.5f);
         p.resetModulation(page, param);
     };
 

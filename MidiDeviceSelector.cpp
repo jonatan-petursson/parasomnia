@@ -1,7 +1,7 @@
 #include "PluginProcessor.h"
 #include "MidiDeviceSelector.h"
 
-MidiDeviceSelector::MidiDeviceSelector(VzzzPluginAudioProcessor &p) : processorRef(p)
+MidiDeviceSelector::MidiDeviceSelector(ParasomniaPluginAudioProcessor &p) : processorRef(p)
 {
     addAndMakeVisible(midiDeviceDropdown);
     midiDeviceDropdown.setTextWhenNothingSelected("Use alternate MIDI Device");

@@ -5,7 +5,7 @@
 #include "CustomLookAndFeel.h"
 #include "JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h"
 
-VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioProcessor &p)
+ParasomniaPluginAudioProcessorEditor::ParasomniaPluginAudioProcessorEditor(ParasomniaPluginAudioProcessor &p)
     : AudioProcessorEditor(&p),
       processorRef(p),
       tabController(juce::TabbedButtonBar::TabsAtTop),
@@ -54,13 +54,13 @@ VzzzPluginAudioProcessorEditor::VzzzPluginAudioProcessorEditor(VzzzPluginAudioPr
     setResizable(true, true);
 }
 
-VzzzPluginAudioProcessorEditor::~VzzzPluginAudioProcessorEditor()
+ParasomniaPluginAudioProcessorEditor::~ParasomniaPluginAudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
 }
 
 //==============================================================================
-void VzzzPluginAudioProcessorEditor::paint(juce::Graphics &g)
+void ParasomniaPluginAudioProcessorEditor::paint(juce::Graphics &g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
@@ -73,11 +73,11 @@ void VzzzPluginAudioProcessorEditor::paint(juce::Graphics &g)
     g.fillRect(controlsArea.toFloat());
 }
 
-void VzzzPluginAudioProcessorEditor::updateSliders()
+void ParasomniaPluginAudioProcessorEditor::updateSliders()
 {
 }
 
-void VzzzPluginAudioProcessorEditor::buttonClicked(juce::String button)
+void ParasomniaPluginAudioProcessorEditor::buttonClicked(juce::String button)
 {
     juce::Logger::writeToLog("Button clicked: " + button);
     if (button == "left")
@@ -100,7 +100,7 @@ void VzzzPluginAudioProcessorEditor::buttonClicked(juce::String button)
     }
 }
 
-void VzzzPluginAudioProcessorEditor::resized()
+void ParasomniaPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
     auto controlsArea = area.removeFromBottom((int)(getHeight() * 0.20));

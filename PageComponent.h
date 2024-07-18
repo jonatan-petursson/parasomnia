@@ -1,6 +1,6 @@
 #pragma once
 
-class VzzzPluginAudioProcessorEditor;
+class ParasomniaPluginAudioProcessorEditor;
 
 #include "PluginProcessor.h"
 #include "ModulationComponent.h"
@@ -9,14 +9,14 @@ class VzzzPluginAudioProcessorEditor;
 class PageComponent : public juce::Component
 {
 public:
-    PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcessorEditor &pe, int pageArg);
+    PageComponent(ParasomniaPluginAudioProcessor &p, ParasomniaPluginAudioProcessorEditor &pe, int pageArg);
     ~PageComponent() override;
 
     void resized() override;
     void visibilityChanged() override;
 
 private:
-    VzzzPluginAudioProcessor &processorRef;
+    ParasomniaPluginAudioProcessor &processorRef;
 
     juce::OwnedArray<juce::SliderParameterAttachment> attachments;
     juce::OwnedArray<LabeledSlider> labeledSliders;

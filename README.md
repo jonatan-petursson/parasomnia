@@ -1,6 +1,6 @@
-# Vzzz
+# Parasomnia
 
-Vzzz is an _unofficial_ virtual copy of the [Mezzz controller by Sleepy Circuits](https://sleepycircuits.com/mezzz). Mezzz is the companion hardware unit to the vidOS video synthesizer, which runs as an app on iOS, iPad or MacOS. Using Vzzz, you can control vidOS using a mouse and keyboard, or map a MIDI controller to any of its many (many) parameters. The goal of the project is to replicate as much of the hardware functionality as possible, and keep it up to date as the VidOS app evolves. Currently Vzzz is compatible(ish) with the 1.4 version of vidOS.
+Parasomnia is an _unofficial_ virtual copy of the [Mezzz controller by Sleepy Circuits](https://sleepycircuits.com/mezzz). Mezzz is the companion hardware unit to the vidOS video synthesizer, which runs as an app on iOS, iPad or MacOS. Using Parasomnia, you can control vidOS using a mouse and keyboard, or map a MIDI controller to any of its many (many) parameters. The goal of the project is to replicate as much of the hardware functionality as possible, and keep it up to date as the VidOS app evolves. Currently Parasomnia is compatible(ish) with the 1.4 version of vidOS.
 
 # Requirements
 
@@ -11,20 +11,20 @@ Vzzz is an _unofficial_ virtual copy of the [Mezzz controller by Sleepy Circuits
 
 Note: You'll need to have a copy of [vidOS](https://apps.apple.com/ph/app/sleepy-vidos/id6448588001) installed on your MacOS or iOS device.
 
-Head to the [releases page](https://github.com/jonatan-petursson/vzzz/releases) for the latest release.
+Head to the [releases page](https://github.com/jonatan-petursson/parasomnia/releases) for the latest release.
 
 - VST3
 
   - Unpack the zip file and copy the .vst3 bundle to wherever your DAW looks for plugins (`/Library/Audio/Plug-Ins/VST3` by default).
 
 - Standalone
-  - Unpack the zip file and run the `vzzz.app` bundle.
+  - Unpack the zip file and run the `parasomnia.app` bundle.
 
 # Getting Started
 
 The interface closely mirrors the physical unit, so the excellent Sleepy Circuits [Mega Demo video](https://www.youtube.com/watch?v=EGYH6aY2e7Y) will get you aquainted with the controls.
 
-<img src="assets/vzzz-interface.png" width="200">
+<img src="assets/parasomnia-interface.png" width="200">
 
 If you're running vidOS on a separate device, you'll need to select the correct midi output device using the dropdown in the lower left of the plugin window.
 
@@ -41,4 +41,4 @@ The preset system is based on MIDI notes, which should work using normal MIDI ro
 
 # License
 
-Vzzz is released under the [MIT License](https://opensource.org/licenses/MIT).
+Parasomnia is released under the [MIT License](https://opensource.org/licenses/MIT).

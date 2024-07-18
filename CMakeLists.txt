@@ -14,7 +14,7 @@ cmake_minimum_required(VERSION 3.22)
 # `project()` command. `project()` sets up some helpful variables that describe source/binary
 # directories, and the current project version. This is a standard CMake command.
 
-project(VZZZ VERSION 0.0.1)
+project(PARASOMNIA VERSION 0.0.1)
 
 # If you've installed JUCE somehow (via a package manager, or directly using the CMake install
 # target), you'll need to tell this project that it depends on the installed copy of JUCE. If you've
@@ -32,21 +32,21 @@ add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory
 # juce_set_aax_sdk_path(...)
 
 # `juce_add_plugin` adds a static library target with the name passed as the first argument
-# (vzzz here). This target is a normal CMake target, but has a lot of extra properties set
+# (parasomnia here). This target is a normal CMake target, but has a lot of extra properties set
 # up by default. As well as this shared code static library, this function adds targets for each of
 # the formats specified by the FORMATS arguments. This function accepts many optional arguments.
 # Check the readme at `docs/CMake API.md` in the JUCE repo for the full list.
 
-juce_add_plugin(vzzz
-    COMPANY_NAME vzzz                          # Specify the name of the plugin's author
+juce_add_plugin(parasomnia
+    COMPANY_NAME parasomnia                          # Specify the name of the plugin's author
     NEEDS_MIDI_INPUT TRUE                       # Does the plugin need midi input?
     NEEDS_MIDI_OUTPUT TRUE                      # Does the plugin need midi output?
     
-    PLUGIN_MANUFACTURER_CODE Vzzz               # A four-character manufacturer id with at least one upper-case character
-    PLUGIN_CODE Vzzz                            # A unique four-character plugin id with exactly one upper-case character
+    PLUGIN_MANUFACTURER_CODE para               # A four-character manufacturer id with at least one upper-case character
+    PLUGIN_CODE para                            # A unique four-character plugin id with exactly one upper-case character
     
     FORMATS VST2 VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
-    PRODUCT_NAME "vzzz"                         # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "parasomnia"                         # The name of the final executable, which can differ from the target name
     JUCE_COPY_PLUGIN_AFTER_BUILD true
     COPY_PLUGIN_AFTER_BUILD true)        
 # `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
@@ -55,14 +55,14 @@ juce_add_plugin(vzzz
 # include all your JUCE module headers; if you're happy to include module headers directly, you
 # probably don't need to call this.
 
-juce_generate_juce_header(vzzz)
+juce_generate_juce_header(parasomnia)
 
 # `target_sources` adds source files to a target. We pass the target that needs the sources as the
 # first argument, then a visibility parameter for the sources which should normally be PRIVATE.
 # Finally, we supply a list of source files that will be built into the target. This is a standard
 # CMake command.
 
-target_sources(vzzz
+target_sources(parasomnia
     PRIVATE
         PluginEditor.cpp
         PluginProcessor.cpp
@@ -80,7 +80,7 @@ target_sources(vzzz
 # definitions will be visible both to your code, and also the JUCE module code, so for new
 # definitions, pick unique names that are unlikely to collide! This is a standard CMake command.
 
-target_compile_definitions(vzzz
+target_compile_definitions(parasomnia
     PUBLIC
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
         JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
@@ -102,7 +102,7 @@ juce_add_binary_data(AudioPluginData SOURCES params.json)
 # linked automatically. If we'd generated a binary data target above, we would need to link to it
 # here too. This is a standard CMake command.
 
-target_link_libraries(vzzz
+target_link_libraries(parasomnia
     PRIVATE
         AudioPluginData
         juce::juce_audio_utils

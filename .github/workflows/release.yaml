@@ -28,15 +28,15 @@ jobs:
 
       - name: Build VST3
         run: |
-          cmake --build ${{github.workspace}}/build --target vzzz_VST3 --config Release
-          mkdir -p artifact/Vzzz-VST3-MacOS
-          cp -r build/vzzz_artefacts/Release/VST3/vzzz.vst3 artifact/Vzzz-VST3-MacOS
+          cmake --build ${{github.workspace}}/build --target parasomnia_VST3 --config Release
+          mkdir -p artifact/Parasomnia-VST3-MacOS
+          cp -r build/parasomnia_artefacts/Release/VST3/parasomnia.vst3 artifact/Parasomnia-VST3-MacOS
 
       - name: Build Standalone
         run: |
-          cmake --build ${{github.workspace}}/build --target vzzz_Standalone --config Release
-          mkdir -p artifact/Vzzz-Standalone-MacOS
-          cp -r build/vzzz_artefacts/Release/Standalone/vzzz.app artifact/Vzzz-Standalone-MacOS
+          cmake --build ${{github.workspace}}/build --target parasomnia_Standalone --config Release
+          mkdir -p artifact/Parasomnia-Standalone-MacOS
+          cp -r build/parasomnia_artefacts/Release/Standalone/parasomnia.app artifact/Parasomnia-Standalone-MacOS
 
       - name: Sign packages
         env:
@@ -57,10 +57,10 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # Sign the VST3
-          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Vzzz-VST3-MacOS/vzzz.vst3
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-VST3-MacOS/parasomnia.vst3
 
           # Sign the Standalone
-          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Vzzz-Standalone-MacOS/vzzz.app
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-Standalone-MacOS/parasomnia.app
 
           # Clean up
           security delete-keychain $KEYCHAIN_PATH
@@ -96,8 +96,8 @@ jobs:
             --wait
 
           # Staple the notarization ticket to both the app and the VST3
-          xcrun stapler staple "artifact/Vzzz-Standalone-MacOS/vzzz.app"
-          xcrun stapler staple "artifact/Vzzz-VST3-MacOS/vzzz.vst3"
+          xcrun stapler staple "artifact/Parasomnia-Standalone-MacOS/parasomnia.app"
+          xcrun stapler staple "artifact/Parasomnia-VST3-MacOS/parasomnia.vst3"
 
           # Clean up
           security delete-keychain $KEYCHAIN_PATH
@@ -106,13 +106,13 @@ jobs:
       - name: Package
         run: |
           cd artifact
-          zip -r ../Vzzz-VST3-MacOS.zip Vzzz-VST3-MacOS
-          zip -r ../Vzzz-Standalone-MacOS.zip Vzzz-Standalone-MacOS
+          zip -r ../Parasomnia-VST3-MacOS.zip Parasomnia-VST3-MacOS
+          zip -r ../Parasomnia-Standalone-MacOS.zip Parasomnia-Standalone-MacOS
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            Vzzz-VST3-MacOS.zip
-            Vzzz-Standalone-MacOS.zip
+            Parasomnia-VST3-MacOS.zip
+            Parasomnia-Standalone-MacOS.zip

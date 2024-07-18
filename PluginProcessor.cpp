@@ -2,7 +2,7 @@
 #include "PluginEditor.h"
 #include "ParamInfoProvider.h"
 //==============================================================================
-VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
+ParasomniaPluginAudioProcessor::ParasomniaPluginAudioProcessor()
     : AudioProcessor(BusesProperties()
 #if !JucePlugin_IsMidiEffect
 #if !JucePlugin_IsSynth
@@ -49,7 +49,7 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
         groups.push_back(std::move(group));
     }
 
-    parameters = new juce::AudioProcessorValueTreeState(*this, nullptr, juce::Identifier("vzzz"), {groups.begin(), groups.end()});
+    parameters = new juce::AudioProcessorValueTreeState(*this, nullptr, juce::Identifier("parasomnia"), {groups.begin(), groups.end()});
 
     // create listener for all parameters
     for (auto &paramId : paramIds)
@@ -58,7 +58,7 @@ VzzzPluginAudioProcessor::VzzzPluginAudioProcessor()
     }
 }
 
-VzzzPluginAudioProcessor::~VzzzPluginAudioProcessor()
+ParasomniaPluginAudioProcessor::~ParasomniaPluginAudioProcessor()
 {
 
     if (parameters != nullptr)
@@ -72,7 +72,7 @@ VzzzPluginAudioProcessor::~VzzzPluginAudioProcessor()
         midiOutput.reset();
 }
 
-void VzzzPluginAudioProcessor::incrementModulationParameter(const juce::String &paramId, bool increment)
+void ParasomniaPluginAudioProcessor::incrementModulationParameter(const juce::String &paramId, bool increment)
 {
     juce::StringArray parts;
     parts.addTokens(paramId, "_", "\"");
@@ -111,22 +111,22 @@ void VzzzPluginAudioProcessor::incrementModulationParameter(const juce::String &
                      "1,");
 }
 
-void VzzzPluginAudioProcessor::incrementRenderScale(bool increment)
+void ParasomniaPluginAudioProcessor::incrementRenderScale(bool increment)
 {
     sendSysExMessage("render_scale," + juce::String(increment ? "1" : "0") + ",");
 }
 
-void VzzzPluginAudioProcessor::onCenterButtonUp()
+void ParasomniaPluginAudioProcessor::onCenterButtonUp()
 {
     sendSysExMessage("bt_event,2,up,");
 }
 
-void VzzzPluginAudioProcessor::openPage(int page)
+void ParasomniaPluginAudioProcessor::openPage(int page)
 {
     sendSysExMessage("open_page," + juce::String(page - 1) + ",");
 }
 
-void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
+void ParasomniaPluginAudioProcessor::sendSysExMessage(juce::String message)
 {
     std::size_t size = message.getNumBytesAsUTF8();
     auto messageChars = std::make_unique<char[]>(size);
@@ -142,17 +142,17 @@ void VzzzPluginAudioProcessor::sendSysExMessage(juce::String message)
     }
 }
 
-void VzzzPluginAudioProcessor::updateSmoothing(float value)
+void ParasomniaPluginAudioProcessor::updateSmoothing(float value)
 {
     sendSysExMessage("smoothing," + juce::String(value) + ",");
 }
 
-void VzzzPluginAudioProcessor::resetModulation(int page, int param)
+void ParasomniaPluginAudioProcessor::resetModulation(int page, int param)
 {
     sendSysExMessage("reset," + juce::String(1) + "," + juce::String(((page - 1) * 8) + param) + ",");
 }
 
-void VzzzPluginAudioProcessor::init()
+void ParasomniaPluginAudioProcessor::init()
 {
     for (const auto &paramId : paramIds)
     {
@@ -165,7 +165,7 @@ void VzzzPluginAudioProcessor::init()
     sendSysExMessage("init,");
 }
 
-void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId, float newValue)
+void ParasomniaPluginAudioProcessor::parameterChanged(const juce::String &parameterId, float newValue)
 {
     if (parameterId == "smoothing")
     {
@@ -196,12 +196,12 @@ void VzzzPluginAudioProcessor::parameterChanged(const juce::String &parameterId,
 }
 
 //==============================================================================
-const juce::String VzzzPluginAudioProcessor::getName() const
+const juce::String ParasomniaPluginAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool VzzzPluginAudioProcessor::acceptsMidi() const
+bool ParasomniaPluginAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
     return true;
@@ -210,7 +210,7 @@ bool VzzzPluginAudioProcessor::acceptsMidi() const
 #endif
 }
 
-bool VzzzPluginAudioProcessor::producesMidi() const
+bool ParasomniaPluginAudioProcessor::producesMidi() const
 {
 #if JucePlugin_ProducesMidiOutput
     return true;
@@ -219,7 +219,7 @@ bool VzzzPluginAudioProcessor::producesMidi() const
 #endif
 }
 
-bool VzzzPluginAudioProcessor::isMidiEffect() const
+bool ParasomniaPluginAudioProcessor::isMidiEffect() const
 {
 #if JucePlugin_IsMidiEffect
     return true;
@@ -228,40 +228,40 @@ bool VzzzPluginAudioProcessor::isMidiEffect() const
 #endif
 }
 
-double VzzzPluginAudioProcessor::getTailLengthSeconds() const
+double ParasomniaPluginAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int VzzzPluginAudioProcessor::getNumPrograms()
+int ParasomniaPluginAudioProcessor::getNumPrograms()
 {
     return 1; // NB: some hosts don't cope very well if you tell them there are 0 programs,
               // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int VzzzPluginAudioProcessor::getCurrentProgram()
+int ParasomniaPluginAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void VzzzPluginAudioProcessor::setCurrentProgram(int index)
+void ParasomniaPluginAudioProcessor::setCurrentProgram(int index)
 {
     juce::ignoreUnused(index);
 }
 
-const juce::String VzzzPluginAudioProcessor::getProgramName(int index)
+const juce::String ParasomniaPluginAudioProcessor::getProgramName(int index)
 {
     juce::ignoreUnused(index);
     return {};
 }
 
-void VzzzPluginAudioProcessor::changeProgramName(int index, const juce::String &newName)
+void ParasomniaPluginAudioProcessor::changeProgramName(int index, const juce::String &newName)
 {
     juce::ignoreUnused(index, newName);
 }
 
 //==============================================================================
-void VzzzPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void ParasomniaPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
@@ -274,12 +274,12 @@ void VzzzPluginAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBl
     }
 }
 
-juce::Array<MidiDeviceInfo> VzzzPluginAudioProcessor::getAvailableMidiDevices()
+juce::Array<MidiDeviceInfo> ParasomniaPluginAudioProcessor::getAvailableMidiDevices()
 {
     return juce::MidiOutput::getAvailableDevices();
 }
 
-void VzzzPluginAudioProcessor::changeMidiOutputDevice(const juce::String &deviceIdentifier)
+void ParasomniaPluginAudioProcessor::changeMidiOutputDevice(const juce::String &deviceIdentifier)
 {
     if (midiOutput != nullptr)
     {
@@ -297,13 +297,13 @@ void VzzzPluginAudioProcessor::changeMidiOutputDevice(const juce::String &device
     midiOutput = juce::MidiOutput::openDevice(deviceIdentifier);
 }
 
-void VzzzPluginAudioProcessor::releaseResources()
+void ParasomniaPluginAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
-bool VzzzPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
+bool ParasomniaPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
 #if JucePlugin_IsMidiEffect
     juce::ignoreUnused(layouts);
@@ -326,7 +326,7 @@ bool VzzzPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts
 #endif
 }
 
-void VzzzPluginAudioProcessor::sendMidiMessage(const juce::MidiMessage &message)
+void ParasomniaPluginAudioProcessor::sendMidiMessage(const juce::MidiMessage &message)
 {
     if (midiOutput != nullptr)
     {
@@ -335,8 +335,8 @@ void VzzzPluginAudioProcessor::sendMidiMessage(const juce::MidiMessage &message)
     }
 }
 
-void VzzzPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
-                                            juce::MidiBuffer &midiMessages)
+void ParasomniaPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
+                                                  juce::MidiBuffer &midiMessages)
 {
     juce::ignoreUnused(midiMessages);
     juce::ScopedNoDenormals noDenormals;
@@ -344,18 +344,18 @@ void VzzzPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
 }
 
 //==============================================================================
-bool VzzzPluginAudioProcessor::hasEditor() const
+bool ParasomniaPluginAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor *VzzzPluginAudioProcessor::createEditor()
+juce::AudioProcessorEditor *ParasomniaPluginAudioProcessor::createEditor()
 {
-    return new VzzzPluginAudioProcessorEditor(*this);
+    return new ParasomniaPluginAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void VzzzPluginAudioProcessor::getStateInformation(juce::MemoryBlock &destData)
+void ParasomniaPluginAudioProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
@@ -363,7 +363,7 @@ void VzzzPluginAudioProcessor::getStateInformation(juce::MemoryBlock &destData)
     juce::ignoreUnused(destData);
 }
 
-void VzzzPluginAudioProcessor::setStateInformation(const void *data, int sizeInBytes)
+void ParasomniaPluginAudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -374,5 +374,5 @@ void VzzzPluginAudioProcessor::setStateInformation(const void *data, int sizeInB
 // This creates new instances of the plugin..
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
-    return new VzzzPluginAudioProcessor();
+    return new ParasomniaPluginAudioProcessor();
 }
