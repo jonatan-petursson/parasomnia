@@ -26,9 +26,9 @@ void LabeledSlider::mouseDown(const juce::MouseEvent &event)
     }
 }
 
-void LabeledSlider::setSelected(bool isSelected)
+void LabeledSlider::setSelected(bool selected)
 {
-    this->isSelected = isSelected;
+    this->isSelected = selected;
     this->repaint();
 }
 

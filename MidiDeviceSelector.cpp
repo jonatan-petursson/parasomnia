@@ -54,5 +54,10 @@ void MidiDeviceSelector::updateDeviceList()
 
 juce::String MidiDeviceSelector::getDeviceIdentifierFromDropdownId(int dropdownId)
 {
-    return midiDevices.at(dropdownId - 1).identifier;
+    if (dropdownId <= 0)
+    {
+        throw std::out_of_range("Invalid dropdown ID");
+    }
+
+    return midiDevices[static_cast<size_t>(dropdownId) - 1].identifier;
 }

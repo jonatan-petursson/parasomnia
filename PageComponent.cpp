@@ -4,7 +4,6 @@
 
 PageComponent::PageComponent(VzzzPluginAudioProcessor &p, VzzzPluginAudioProcessorEditor &pe, int pageArg)
     : processorRef(p),
-      processorEditorRef(pe),
       modulationTabs(juce::TabbedButtonBar::Orientation::TabsAtTop),
       centerButton("Center", juce::DrawableButton::ButtonStyle::ImageAboveTextLabel),
       pageLabel(ParamInfoProvider::getPageShortTitle(pageArg), ParamInfoProvider::getPageTitle(pageArg)),

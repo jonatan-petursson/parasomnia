@@ -17,7 +17,6 @@ public:
 
 private:
     VzzzPluginAudioProcessor &processorRef;
-    VzzzPluginAudioProcessorEditor &processorEditorRef;
 
     juce::OwnedArray<juce::SliderParameterAttachment> attachments;
     juce::OwnedArray<LabeledSlider> labeledSliders;
