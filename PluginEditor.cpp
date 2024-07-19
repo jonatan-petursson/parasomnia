@@ -50,7 +50,7 @@ ParasomniaPluginAudioProcessorEditor::ParasomniaPluginAudioProcessorEditor(Paras
 
     addAndMakeVisible(tabController);
 
-    setSize(500, 700);
+    setSize(500, 833);
     setResizable(true, true);
 }
 
