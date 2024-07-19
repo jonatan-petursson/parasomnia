@@ -80,7 +80,7 @@ private:
     std::vector<juce::String> paramIds;
     void sendMidiMessage(const juce::MidiMessage &message);
     void parameterChanged(const juce::String &parameterId, float newValue) override;
-
+    void updateStateFromParameters();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ParasomniaPluginAudioProcessor)
 };
