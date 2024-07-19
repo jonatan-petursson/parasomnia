@@ -5,7 +5,7 @@
 ParasomniaPluginAudioProcessor::ParasomniaPluginAudioProcessor()
     : AudioProcessor(BusesProperties()
 #if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
+#if !JucePlugin_IsSynth && !JucePlugin_IsStandalone
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
 #endif
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
@@ -317,7 +317,7 @@ bool ParasomniaPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &l
         return false;
 
         // This checks if the input layout matches the output layout
-#if !JucePlugin_IsSynth
+#if !JucePlugin_IsSynth && !JucePlugin_IsStandalone
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
 #endif
@@ -369,25 +369,6 @@ void ParasomniaPluginAudioProcessor::setStateInformation(const void *data, int s
     if (xmlState.get() != nullptr)
         if (xmlState->hasTagName(parameters->state.getType()))
             parameters->replaceState(juce::ValueTree::fromXml(*xmlState));
-
-    updateStateFromParameters();
-}
-
-void ParasomniaPluginAudioProcessor::updateStateFromParameters()
-{
-    for (const auto &paramId : paramIds)
-    {
-        if (auto *param = parameters->getParameter(paramId))
-        {
-            float currentValue = param->getValue();
-            float defaultValue = param->getDefaultValue();
-
-            if (std::abs(currentValue - defaultValue) > 0.00001f)
-            {
-                parameterChanged(paramId, currentValue);
-            }
-        }
-    }
 }
 
 //==============================================================================
