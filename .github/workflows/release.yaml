@@ -113,6 +113,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          body: |
+            ${{ github.ref_name }}
           files: |
             Parasomnia-VST3-MacOS.zip
             Parasomnia-Standalone-MacOS.zip
