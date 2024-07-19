@@ -37,16 +37,16 @@ add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory
 # the formats specified by the FORMATS arguments. This function accepts many optional arguments.
 # Check the readme at `docs/CMake API.md` in the JUCE repo for the full list.
 
-juce_add_plugin(parasomnia
-    COMPANY_NAME parasomnia                          # Specify the name of the plugin's author
+juce_add_plugin(Parasomnia
+    COMPANY_NAME Parasomnia                          # Specify the name of the plugin's author
     NEEDS_MIDI_INPUT TRUE                       # Does the plugin need midi input?
     NEEDS_MIDI_OUTPUT TRUE                      # Does the plugin need midi output?
     
-    PLUGIN_MANUFACTURER_CODE para               # A four-character manufacturer id with at least one upper-case character
-    PLUGIN_CODE para                            # A unique four-character plugin id with exactly one upper-case character
+    PLUGIN_MANUFACTURER_CODE Para               # A four-character manufacturer id with at least one upper-case character
+    PLUGIN_CODE Para                            # A unique four-character plugin id with exactly one upper-case character
     
     FORMATS VST2 VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
-    PRODUCT_NAME "parasomnia"                         # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "Parasomnia"                         # The name of the final executable, which can differ from the target name
     JUCE_COPY_PLUGIN_AFTER_BUILD true
     COPY_PLUGIN_AFTER_BUILD true)        
 # `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
@@ -55,14 +55,14 @@ juce_add_plugin(parasomnia
 # include all your JUCE module headers; if you're happy to include module headers directly, you
 # probably don't need to call this.
 
-juce_generate_juce_header(parasomnia)
+juce_generate_juce_header(Parasomnia)
 
 # `target_sources` adds source files to a target. We pass the target that needs the sources as the
 # first argument, then a visibility parameter for the sources which should normally be PRIVATE.
 # Finally, we supply a list of source files that will be built into the target. This is a standard
 # CMake command.
 
-target_sources(parasomnia
+target_sources(Parasomnia
     PRIVATE
         PluginEditor.cpp
         PluginProcessor.cpp
@@ -80,7 +80,7 @@ target_sources(parasomnia
 # definitions will be visible both to your code, and also the JUCE module code, so for new
 # definitions, pick unique names that are unlikely to collide! This is a standard CMake command.
 
-target_compile_definitions(parasomnia
+target_compile_definitions(Parasomnia
     PUBLIC
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
         JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
@@ -102,7 +102,7 @@ juce_add_binary_data(AudioPluginData SOURCES params.json)
 # linked automatically. If we'd generated a binary data target above, we would need to link to it
 # here too. This is a standard CMake command.
 
-target_link_libraries(parasomnia
+target_link_libraries(Parasomnia
     PRIVATE
         AudioPluginData
         juce::juce_audio_utils

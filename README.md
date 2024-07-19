@@ -18,7 +18,7 @@ Head to the [releases page](https://github.com/jonatan-petursson/parasomnia/rele
   - Unpack the zip file and copy the .vst3 bundle to wherever your DAW looks for plugins (`/Library/Audio/Plug-Ins/VST3` by default).
 
 - Standalone
-  - Unpack the zip file and run the `parasomnia.app` bundle.
+  - Unpack the zip file and run the `Parasomnia.app` bundle.
 
 # Getting Started
 

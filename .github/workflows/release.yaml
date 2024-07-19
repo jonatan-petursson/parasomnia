@@ -28,15 +28,15 @@ jobs:
 
       - name: Build VST3
         run: |
-          cmake --build ${{github.workspace}}/build --target parasomnia_VST3 --config Release
+          cmake --build ${{github.workspace}}/build --target Parasomnia_VST3 --config Release
           mkdir -p artifact/Parasomnia-VST3-MacOS
-          cp -r build/parasomnia_artefacts/Release/VST3/parasomnia.vst3 artifact/Parasomnia-VST3-MacOS
+          cp -r build/parasomnia_artefacts/Release/VST3/Parasomnia.vst3 artifact/Parasomnia-VST3-MacOS
 
       - name: Build Standalone
         run: |
-          cmake --build ${{github.workspace}}/build --target parasomnia_Standalone --config Release
+          cmake --build ${{github.workspace}}/build --target Parasomnia_Standalone --config Release
           mkdir -p artifact/Parasomnia-Standalone-MacOS
-          cp -r build/parasomnia_artefacts/Release/Standalone/parasomnia.app artifact/Parasomnia-Standalone-MacOS
+          cp -r build/parasomnia_artefacts/Release/Standalone/Parasomnia.app artifact/Parasomnia-Standalone-MacOS
 
       - name: Sign packages
         env:
@@ -57,10 +57,10 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # Sign the VST3
-          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-VST3-MacOS/parasomnia.vst3
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-VST3-MacOS/Parasomnia.vst3
 
           # Sign the Standalone
-          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-Standalone-MacOS/parasomnia.app
+          codesign --force -s "$APPLE_SIGNING_IDENTITY" -v --deep --options runtime --timestamp artifact/Parasomnia-Standalone-MacOS/Parasomnia.app
 
           # Clean up
           security delete-keychain $KEYCHAIN_PATH
@@ -96,8 +96,8 @@ jobs:
             --wait
 
           # Staple the notarization ticket to both the app and the VST3
-          xcrun stapler staple "artifact/Parasomnia-Standalone-MacOS/parasomnia.app"
-          xcrun stapler staple "artifact/Parasomnia-VST3-MacOS/parasomnia.vst3"
+          xcrun stapler staple "artifact/Parasomnia-Standalone-MacOS/Parasomnia.app"
+          xcrun stapler staple "artifact/Parasomnia-VST3-MacOS/Parasomnia.vst3"
 
           # Clean up
           security delete-keychain $KEYCHAIN_PATH
