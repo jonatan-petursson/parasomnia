@@ -5,7 +5,7 @@
 
 #include <string>
 #include <stdexcept>
-#include "vendor/nlohmann/json.hpp"
+#include "../vendor/nlohmann/json.hpp"
 
 class ParamInfoProvider
 {

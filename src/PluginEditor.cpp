@@ -3,7 +3,7 @@
 #include "PageComponent.h"
 #include "ParamInfoProvider.h"
 #include "CustomLookAndFeel.h"
-#include "JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h"
+#include "../JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h"
 
 ParasomniaPluginAudioProcessorEditor::ParasomniaPluginAudioProcessorEditor(ParasomniaPluginAudioProcessor &p)
     : AudioProcessorEditor(&p),

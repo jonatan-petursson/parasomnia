@@ -64,14 +64,14 @@ juce_generate_juce_header(Parasomnia)
 
 target_sources(Parasomnia
     PRIVATE
-        PluginEditor.cpp
-        PluginProcessor.cpp
-        PageComponent.cpp
-        ModulationComponent.cpp
-        ParamInfoProvider.cpp
-        LabeledSlider.cpp
-        IncrementDecrementComponent.cpp
-        MidiDeviceSelector.cpp)
+        src/PluginEditor.cpp
+        src/PluginProcessor.cpp
+        src/PageComponent.cpp
+        src/ModulationComponent.cpp
+        src/ParamInfoProvider.cpp
+        src/LabeledSlider.cpp
+        src/IncrementDecrementComponent.cpp
+        src/MidiDeviceSelector.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
@@ -94,7 +94,7 @@ target_compile_definitions(Parasomnia
 # static library. These source files can be of any kind (wav data, images, fonts, icons etc.).
 # Conversion to binary-data will happen when your target is built.
 
-juce_add_binary_data(AudioPluginData SOURCES params.json)
+juce_add_binary_data(AudioPluginData SOURCES resources/params.json)
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
