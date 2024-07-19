@@ -1,6 +1,6 @@
 # Parasomnia
 
-Parasomnia is an _unofficial_ virtual copy of the [Mezzz controller by Sleepy Circuits](https://sleepycircuits.com/mezzz). Mezzz is the companion hardware unit to the vidOS video synthesizer, which runs as an app on iOS, iPad or MacOS. Using Parasomnia, you can control vidOS using a mouse and keyboard, or map a MIDI controller to any of its many (many) parameters. The goal of the project is to replicate as much of the hardware functionality as possible, and keep it up to date as the VidOS app evolves. Currently Parasomnia is compatible(ish) with the 1.4 version of vidOS.
+Parasomnia is an _unofficial_ virtual copy of the [Mezzz controller by Sleepy Circuits](https://sleepycircuits.com/mezzz). Mezzz is the companion hardware unit to the vidOS video synthesizer, which runs as an app on iOS, iPad or MacOS. Using Parasomnia, you can control vidOS using a mouse and keyboard, or map a MIDI controller to any of its many (many) parameters. The goal of the project is to replicate as much of the hardware functionality as possible, and keep it up to date as the vidOS app evolves. Currently Parasomnia is compatible(ish) with the 1.4 version of vidOS.
 
 # Requirements
 
@@ -24,7 +24,7 @@ Head to the [releases page](https://github.com/jonatan-petursson/parasomnia/rele
 
 The interface closely mirrors the physical unit, so the excellent Sleepy Circuits [Mega Demo video](https://www.youtube.com/watch?v=EGYH6aY2e7Y) will get you aquainted with the controls.
 
-<img src="assets/parasomnia-interface.png" width="200">
+<img src="assets/parasomnia-interface.png" width="300">
 
 If you're running vidOS on a separate device, you'll need to select the correct midi output device using the dropdown in the lower left of the plugin window.
 
